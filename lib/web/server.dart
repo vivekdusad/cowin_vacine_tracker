@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cowin_vaccine_tracker/constants/constants.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 //le commit me agian
@@ -13,14 +14,18 @@ abstract class Server {
 
 class ServerBase extends Server {
   Future<Response> _getData({String url}) async {
-    print(baseUrl + url);
-    var response = await http.get(Uri.parse(baseUrl + url));
+    print(sessionsbaseUrl + url);
+    var response = await http.get(Uri.parse(sessionsbaseUrl + url));
     return response;
+  }
+  Future<List<State>> getStates()async{
+    Response response = await _getData(url:locationbaseUrl+"states");
+    
   }
 
   Future<List<Centers>> getSessionByPincode(String pincode, String date) async {
     Response _response =
-        await _getData(url: "calendarByPin?pincode=303503&date=31-03-2021");
+        await _getData(url: "calendarByPin?pincode=$pincode&date=31-03-2021");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");
