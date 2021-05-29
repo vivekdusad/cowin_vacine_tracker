@@ -5,6 +5,7 @@ import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+
 //le commit me agian
 //le commit me agian
 abstract class Server {
@@ -44,6 +45,7 @@ class ServerBase extends Server {
     }).toList();
     return centers;
   }
+
   Future<List<Centers>> getSessionByDistrict(
       String dist_id, String date) async {
     Response _response = await _getData(
@@ -64,7 +66,7 @@ class ServerBase extends Server {
     print(list);
     List<Centers> centers = list.map((e) {
       return Centers.fromJson(e);
-    }).toList();   
+    }).toList();
     return centers;
   }
 }
