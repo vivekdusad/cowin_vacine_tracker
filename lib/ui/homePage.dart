@@ -18,7 +18,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
-      watch(serverprovider).getSessionByDistrict("303503", "1234556");
       return BlocProvider(
           create: (context) => PincodeBloc(server: ServerBase()),
           child: Scaffold(
@@ -43,9 +42,9 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     if (_pinCodeController.text.isNotEmpty) {
                       BlocProvider.of<PincodeBloc>(context).add(
-                          PincodeRequested(pincode: _pinCodeController.text));
+                          SessionRequestedByPin(
+                              _pinCodeController.text, "vivek"));
                     }
-
                     print(selectedDate.toString().split(' ')[0]);
                   },
                   child: Text("Get"),
@@ -53,17 +52,21 @@ class HomePage extends StatelessWidget {
               ],
             ),
           );
-        } else if (state is PinCodeLoaded) {
-          return Center(
-            child: Text("hello"),
-          );
-        } else if (state is PinCodeFailed) {
-          return Center(
-            child: Text(state.e),
-          );
-        } else {
+        } else if (state is SessionLoading) {
           return Center(child: CircularProgressIndicator());
+        } else if (state is SessionResultByPinCode) {
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Text(state.centers[index].name),
+              );
+            },
+            itemCount: state.centers.length,
+          );
+        } else if (state is SessionErrorOccured) {
+          return Center(child:Text(state.e.toString()));
         }
+        return Container();
       },
     );
   }

@@ -39,7 +39,6 @@ class ServerBase extends Server {
     }).toList();
     return centers;
   }
-
   Future<List<Centers>> getSessionByDistrict(
       String dist_id, String date) async {
     Response _response = await _getData(
@@ -60,8 +59,7 @@ class ServerBase extends Server {
     print(list);
     List<Centers> centers = list.map((e) {
       return Centers.fromJson(e);
-    }).toList();
-    print(centers.length);
+    }).toList();   
     return centers;
   }
 }

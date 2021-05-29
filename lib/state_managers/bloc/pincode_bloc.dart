@@ -17,18 +17,27 @@ class PincodeBloc extends Bloc<PincodeEvent, PincodeState> {
   Stream<PincodeState> mapEventToState(
     PincodeEvent event,
   ) async* {
-    if (event is PincodeRequested) {
-      print("1");
-      yield PinCodeLoading();
-
+    if (event is SessionRequestedByDistrict) {
+      yield SessionLoading();
       try {
-        // final data = await server.getFindByPin(event.pincode);
-        print("2");
-        // yield PinCodeLoaded(data);
-      } catch (e) {
-        print(3);
-        yield PinCodeFailed(e);
+        List<Centers> centers =
+            await server.getSessionByDistrict(event.dis_code, event.date);
+        yield SessionResultByDistrict(centers);
+      } on Exception catch (e) {
+        yield SessionErrorOccured(e);
       }
+    }
+    else if(event is SessionRequestedByPin){      
+      yield SessionLoading();
+      try {
+        List<Centers> centers =
+            await server.getSessionByDistrict(event.pin_code, event.date);
+        yield SessionResultByPinCode(centers);
+      } on Exception catch (e) {
+        yield SessionErrorOccured(e);
+      }    
     }
   }
 }
+
+

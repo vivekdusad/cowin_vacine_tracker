@@ -5,19 +5,22 @@ abstract class PincodeState extends Equatable {
   @override
   List<Object> get props => [];
 }
-
-class PincodeInitial extends PincodeState {}
-
-class PinCodeLoading extends PincodeState {}
-
-class PinCodeLoaded extends PincodeState {
-  // final PinCodeModel pinCodeModel;
-  // PinCodeLoaded(this.pinCodeModel);
+class PincodeInitial extends PincodeState{
 }
 
-class PinCodeWrong extends PincodeState{}
+class SessionLoading extends PincodeState {}
 
-class PinCodeFailed extends PincodeState {
-  final e;
-  PinCodeFailed(this.e);
+class SessionResultByPinCode extends PincodeState {
+  final List<Centers> centers;
+  SessionResultByPinCode(this.centers);
+}
+
+class SessionResultByDistrict extends PincodeState {
+  final List<Centers> centers;
+  SessionResultByDistrict(this.centers);
+}
+
+class SessionErrorOccured extends PincodeState {
+  final Exception e;
+  SessionErrorOccured(this.e);
 }

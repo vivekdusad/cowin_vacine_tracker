@@ -6,7 +6,14 @@ abstract class PincodeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class PincodeRequested extends PincodeEvent {
-  final String pincode;
-  PincodeRequested({this.pincode});
+class SessionRequestedByPin extends PincodeEvent {
+  final String pin_code;
+  final String date;
+  SessionRequestedByPin(this.pin_code, this.date);
+}
+
+class SessionRequestedByDistrict extends PincodeEvent {
+  final String dis_code;
+  final String date;
+  SessionRequestedByDistrict(this.dis_code, this.date);
 }
