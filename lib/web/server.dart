@@ -21,7 +21,7 @@ class ServerBase extends Server {
 
   Future<List<Centers>> getSessionByPincode(String pincode, String date) async {
     Response _response =
-        await _getData(url: "calendarByPin?pincode=303503&date=31-03-2021");
+        await _getData(url: "calendarByPin?pincode=$pincode&date=31-03-2021");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");
