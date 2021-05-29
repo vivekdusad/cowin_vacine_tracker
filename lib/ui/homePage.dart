@@ -18,37 +18,58 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
+      watch(serverprovider).getDistrict(29);
       return BlocProvider(
-          create: (context) => PincodeBloc(server: ServerBase()),
+          create: (context) => PincodeBloc(server: watch(serverprovider)),
           child: Scaffold(
               appBar: AppBar(
-                title: Text("Vaccine Finder"),
+                title: Text("Search By Pincode"),
               ),
-              body: _content(context)));
+              body: Column(
+                children: [
+                  _upperContent(context),
+                  _lowerContent(context),
+                ],
+              )));
     });
   }
 
-  _content(BuildContext context) {
+  _upperContent(BuildContext context) {
+    return BlocBuilder<PincodeBloc, PincodeState>(
+      builder: (context, state) {
+        return Form(
+          key: _fomrKey,
+          child: Column(
+            children: [
+              _pincodeFeild(),
+              _datePicker(context),
+              MaterialButton(
+                onPressed: () {
+                  if (_pinCodeController.text.isNotEmpty) {
+                    BlocProvider.of<PincodeBloc>(context).add(
+                        SessionRequestedByPin(
+                            _pinCodeController.text, "vivek"));
+                  }
+                  print(selectedDate.toString().split(' ')[0]);
+                },
+                child: Text("Get"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  _lowerContent(BuildContext context) {
     return BlocBuilder<PincodeBloc, PincodeState>(
       builder: (context, state) {
         if (state is PincodeInitial) {
-          return Form(
-            key: _fomrKey,
+          return Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _pincodeFeild(),
-                _datePicker(context),
-                MaterialButton(
-                  onPressed: () {
-                    if (_pinCodeController.text.isNotEmpty) {
-                      BlocProvider.of<PincodeBloc>(context).add(
-                          SessionRequestedByPin(
-                              _pinCodeController.text, "vivek"));
-                    }
-                    print(selectedDate.toString().split(' ')[0]);
-                  },
-                  child: Text("Get"),
-                ),
+                Center(child: Text("Search First")),
               ],
             ),
           );
@@ -56,6 +77,7 @@ class HomePage extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else if (state is SessionResultByPinCode) {
           return ListView.builder(
+            shrinkWrap: true,
             itemBuilder: (context, index) {
               return ListTile(
                 leading: Text(state.centers[index].name),
@@ -64,7 +86,7 @@ class HomePage extends StatelessWidget {
             itemCount: state.centers.length,
           );
         } else if (state is SessionErrorOccured) {
-          return Center(child:Text(state.e.toString()));
+          return Center(child: Text(state.e.toString()));
         }
         return Container();
       },

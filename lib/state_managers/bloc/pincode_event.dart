@@ -17,3 +17,10 @@ class SessionRequestedByDistrict extends PincodeEvent {
   final String date;
   SessionRequestedByDistrict(this.dis_code, this.date);
 }
+
+class StateListRequested extends PincodeEvent {}
+
+class DistrictListRequested extends PincodeEvent {
+  final int state_id;
+  DistrictListRequested(this.state_id);
+}

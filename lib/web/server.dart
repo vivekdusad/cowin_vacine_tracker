@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cowin_vaccine_tracker/constants/constants.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
+import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -11,22 +12,68 @@ import 'package:http/http.dart';
 abstract class Server {
   Future<List<Centers>> getSessionByDistrict(String dist_id, String date);
   Future<List<Centers>> getSessionByPincode(String pincode, String date);
+  Future<List<States>> getStates();
+  Future<List<Districts>> getDistrict(int state_id);
 }
 
 class ServerBase extends Server {
   Future<Response> _getData({String url}) async {
     print(sessionsbaseUrl + url);
-    var response = await http.get(Uri.parse(sessionsbaseUrl + url));
+    var response = await http.get(Uri.parse(url));
     return response;
   }
-  Future<List<State>> getStates()async{
-    Response response = await _getData(url:locationbaseUrl+"states");
-    
+
+  Future<List<States>> getStates() async {
+    Response _response = await _getData(url: locationbaseUrl + "states");
+    try {
+      if (_response.statusCode == 500) {
+        throw SocketException("internet");
+      }
+    } on SocketException {
+      throw CustomException(); //"Internet error"
+    } on FormatException {
+      throw CustomException(); //"Try Again Later"
+    } on HttpException {
+      throw CustomException(); //"Server Error"
+    }
+    final _results = jsonDecode(_response.body);
+    // print(_results["states"]);
+    List<dynamic> list = _results["states"] as List;
+    List<States> centers = list.map((e) {
+      return States.fromJson(e);
+    }).toList();
+    print(centers.first.stateId);
+    return centers;
+  }
+
+  Future<List<Districts>> getDistrict(int state_id) async {
+    Response _response =
+        await _getData(url: locationbaseUrl + "districts/$state_id");
+    try {
+      if (_response.statusCode == 500) {
+        throw SocketException("internet");
+      }
+    } on SocketException {
+      throw CustomException(); //"Internet error"
+    } on FormatException {
+      throw CustomException(); //"Try Again Later"
+    } on HttpException {
+      throw CustomException(); //"Server Error"
+    }
+    final _results = jsonDecode(_response.body);
+    print(_results);
+    List<dynamic> list = _results["districts"] as List;
+    List<Districts> centers = list.map((e) {
+      return Districts.fromJson(e);
+    }).toList();
+    print(centers.first.districtName);
+    return centers;
   }
 
   Future<List<Centers>> getSessionByPincode(String pincode, String date) async {
-    Response _response =
-        await _getData(url: "calendarByPin?pincode=$pincode&date=31-03-2021");
+    Response _response = await _getData(
+        url:
+            sessionsbaseUrl + "calendarByPin?pincode=$pincode&date=31-03-2021");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");
@@ -49,7 +96,8 @@ class ServerBase extends Server {
   Future<List<Centers>> getSessionByDistrict(
       String dist_id, String date) async {
     Response _response = await _getData(
-        url: "calendarByDistrict?district_id=512&date=31-03-2021");
+        url: sessionsbaseUrl +
+            "calendarByDistrict?district_id=512&date=31-03-2021");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");
