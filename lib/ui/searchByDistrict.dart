@@ -1,5 +1,6 @@
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/listcount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,7 +41,25 @@ class ByDistrictPage extends ConsumerWidget {
   }
 
   Widget _lowerContent() {
-    return FlutterLogo();
+    return BlocBuilder<PincodeBloc, PincodeState>(
+      builder: (context, state) {
+        print(state);
+        if (state is SessionResultByDistrict) {
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              return ListCoutn(
+                centers: state.centers[index],
+              );
+            },
+            itemCount: state.centers.length,
+          );
+        } else if (state is SessionLoading) {
+          return CircularProgressIndicator();
+        } else {
+          return Container();
+        }
+      },
+    );
   }
 }
 
@@ -82,10 +101,11 @@ class _UpperContentState extends State<UpperContent> {
           ),
           onChanged: (States value) async {
             districts.clear();
+            _selectedDistrict = null;
             districts = await ProviderContainer()
                 .read(serverprovider)
                 .getDistrict(value.stateId);
-            print("loaded");
+            // print("loaded");
             setState(() {
               _slectedValue = value;
             });
@@ -116,6 +136,14 @@ class _UpperContentState extends State<UpperContent> {
               _selectedDistrict = value;
             });
           },
+        ),
+        MaterialButton(
+          onPressed: () {
+            BlocProvider.of<PincodeBloc>(context).add(
+                SessionRequestedByDistrict(
+                    _selectedDistrict.districtId.toString(), "vivek"));
+          },
+          child: Text("Get"),
         ),
       ],
     );

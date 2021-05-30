@@ -18,7 +18,7 @@ abstract class Server {
 
 class ServerBase extends Server {
   Future<Response> _getData({String url}) async {
-    print(sessionsbaseUrl + url);
+    // print(sessionsbaseUrl + url);
     var response = await http.get(Uri.parse(url));
     return response;
   }
@@ -42,7 +42,7 @@ class ServerBase extends Server {
     List<States> centers = list.map((e) {
       return States.fromJson(e);
     }).toList();
-    print(centers.first.stateId);
+
     return centers;
   }
 
@@ -66,7 +66,6 @@ class ServerBase extends Server {
     List<Districts> centers = list.map((e) {
       return Districts.fromJson(e);
     }).toList();
-    print(centers.first.districtName);
     return centers;
   }
 
@@ -97,7 +96,7 @@ class ServerBase extends Server {
       String dist_id, String date) async {
     Response _response = await _getData(
         url: sessionsbaseUrl +
-            "calendarByDistrict?district_id=512&date=31-03-2021");
+            "calendarByDistrict?district_id=$dist_id&date=31-03-2021");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");
@@ -111,7 +110,6 @@ class ServerBase extends Server {
     }
     final _results = jsonDecode(_response.body);
     var list = _results['centers'] as List;
-    print(list);
     List<Centers> centers = list.map((e) {
       return Centers.fromJson(e);
     }).toList();

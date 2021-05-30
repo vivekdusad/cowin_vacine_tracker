@@ -1,12 +1,14 @@
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/listcount.dart';
 import 'package:cowin_vaccine_tracker/web/server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
@@ -79,8 +81,8 @@ class HomePage extends StatelessWidget {
           return ListView.builder(
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: Text(state.centers[index].name),
+              return ListCoutn(
+                centers: state.centers[index],
               );
             },
             itemCount: state.centers.length,
@@ -119,3 +121,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
