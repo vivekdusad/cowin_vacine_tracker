@@ -27,14 +27,8 @@ class ByDistrictPage extends ConsumerWidget {
             if (state is SessionLoading) {
               return Center(child: CircularProgressIndicator());
             } else if (state is StateListLoaded) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  UpperContent(
-                    states: state.states,
-                  ),
-                  _lowerContent(),
-                ],
+              return UpperContent(
+                states: state.states,
               );
             } else if (state is SessionResultByDistrict) {
               return Column(
@@ -101,75 +95,111 @@ class _UpperContentState extends State<UpperContent> {
   List<Districts> districts = [];
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DropdownButton<States>(
-          focusColor: Colors.white,
-          value: _slectedValue,
-          //elevation: 5,
-          style: TextStyle(color: Colors.white),
-          iconEnabledColor: Colors.black,
-          items: widget.states.map<DropdownMenuItem<States>>((value) {
-            return DropdownMenuItem<States>(
-              value: value,
-              child: Text(
-                value.stateName,
-                style: TextStyle(color: Colors.black),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.white,
+                border: Border.all()),
+            child: DropdownButton<States>(
+              focusColor: Colors.white,
+
+              value: _slectedValue,
+              //elevation: 5,
+              style: TextStyle(color: Colors.white),
+              iconEnabledColor: Colors.black,
+              items: widget.states.map<DropdownMenuItem<States>>((value) {
+                return DropdownMenuItem<States>(
+                  value: value,
+                  child: Text(
+                    value.stateName,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                );
+              }).toList(),
+              hint: Text(
+                "Please choose a State",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
               ),
-            );
-          }).toList(),
-          hint: Text(
-            "Please choose a State",
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+              onChanged: (States value) async {
+                districts.clear();
+                _selectedDistrict = null;
+                districts = await ProviderContainer()
+                    .read(serverprovider)
+                    .getDistrict(value.stateId);
+                // print("loaded");
+                setState(() {
+                  _slectedValue = value;
+                });
+              },
+            ),
           ),
-          onChanged: (States value) async {
-            districts.clear();
-            _selectedDistrict = null;
-            districts = await ProviderContainer()
-                .read(serverprovider)
-                .getDistrict(value.stateId);
-            // print("loaded");
-            setState(() {
-              _slectedValue = value;
-            });
-          },
-        ),
-        DropdownButton<Districts>(
-          focusColor: Colors.white,
-          value: _selectedDistrict,
-          //elevation: 5,
-          style: TextStyle(color: Colors.white),
-          iconEnabledColor: Colors.black,
-          items: districts.map<DropdownMenuItem<Districts>>((value) {
-            return DropdownMenuItem<Districts>(
-              value: value,
-              child: Text(
-                value.districtName,
-                style: TextStyle(color: Colors.black),
+          SizedBox(
+            height: 15,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.white,
+                border: Border.all()),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+              child: DropdownButton<Districts>(
+                focusColor: Colors.white,
+                value: _selectedDistrict,
+                //elevation: 5,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                iconEnabledColor: Colors.black,
+                items: districts.map<DropdownMenuItem<Districts>>((value) {
+                  return DropdownMenuItem<Districts>(
+                    value: value,
+                    child: Text(
+                      value.districtName,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  );
+                }).toList(),
+                hint: Text(
+                  "Please choose a District",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500),
+                ),
+                onChanged: (Districts value) {
+                  setState(() {
+                    _selectedDistrict = value;
+                  });
+                },
               ),
-            );
-          }).toList(),
-          hint: Text(
-            "Please choose a District",
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+            ),
           ),
-          onChanged: (Districts value) {
-            setState(() {
-              _selectedDistrict = value;
-            });
-          },
-        ),
-        MaterialButton(
-          onPressed: () {
-            BlocProvider.of<PincodeBloc>(context).add(
-                SessionRequestedByDistrict(
-                    _selectedDistrict.districtId.toString(), DateTime.now()));
-          },
-          child: Text("Get"),
-        ),
-      ],
+          SizedBox(
+            height: 10,
+          ),
+          MaterialButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.black)),
+            color: Colors.blue,
+            onPressed: () {
+              BlocProvider.of<PincodeBloc>(context).add(
+                  SessionRequestedByDistrict(
+                      _selectedDistrict.districtId.toString(), DateTime.now()));
+            },
+            child: Text("Get"),
+          ),
+        ],
+      ),
     );
   }
 }
