@@ -8,7 +8,7 @@ abstract class PincodeEvent extends Equatable {
 
 class SessionRequestedByPin extends PincodeEvent {
   final String pin_code;
-  final String date;
+  final DateTime date;
   SessionRequestedByPin(this.pin_code, this.date);
 }
 

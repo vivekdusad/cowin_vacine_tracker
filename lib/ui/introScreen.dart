@@ -21,6 +21,7 @@ class Intro extends ConsumerWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: () {
+                
                 Get.to(() => HomePage());
               },
               child: Padding(

@@ -6,19 +6,20 @@ import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 
 //le commit me agian
 //le commit me agian
 abstract class Server {
   Future<List<Centers>> getSessionByDistrict(String dist_id, String date);
-  Future<List<Centers>> getSessionByPincode(String pincode, String date);
+  Future<List<Centers>> getSessionByPincode(String pincode, DateTime date);
   Future<List<States>> getStates();
   Future<List<Districts>> getDistrict(int state_id);
 }
 
 class ServerBase extends Server {
   Future<Response> _getData({String url}) async {
-    // print(sessionsbaseUrl + url);
+    print(url);
     var response = await http.get(Uri.parse(url));
     return response;
   }
@@ -69,10 +70,13 @@ class ServerBase extends Server {
     return centers;
   }
 
-  Future<List<Centers>> getSessionByPincode(String pincode, String date) async {
+  Future<List<Centers>> getSessionByPincode(
+      String pincode, DateTime date) async {
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    final String formatted = formatter.format(date);
     Response _response = await _getData(
         url:
-            sessionsbaseUrl + "calendarByPin?pincode=$pincode&date=31-03-2021");
+            sessionsbaseUrl + "calendarByPin?pincode=$pincode&date=$formatted");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");

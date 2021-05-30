@@ -1,22 +1,21 @@
 import 'package:cowin_vaccine_tracker/main.dart';
-import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/listcount.dart';
-import 'package:cowin_vaccine_tracker/web/server.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key key}) : super(key: key);
   DateTime selectedDate;
   TextEditingController _pinCodeController = TextEditingController();
   GlobalKey _fomrKey = GlobalKey<FormState>();
+//   //yyyy-MM-dd
+  //     final DateTime now = DateTime.now();
 
+  // print(formatted);3240
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
@@ -37,30 +36,45 @@ class HomePage extends StatelessWidget {
   }
 
   _upperContent(BuildContext context) {
+    double opacity =0;
     return BlocBuilder<PincodeBloc, PincodeState>(
       builder: (context, state) {
+        if(state is SessionResultByDistrict||state is SessionResultByPinCode){
+          opacity = 1;
+        }
         return Form(
           key: _fomrKey,
           child: Column(
             children: [
               _pincodeFeild(),
-              _datePicker(context),
+              // _datePicker(context),
               MaterialButton(
+                color: Colors.blue,
                 onPressed: () {
-                  if (_pinCodeController.text.isNotEmpty) {
-                    BlocProvider.of<PincodeBloc>(context).add(
-                        SessionRequestedByPin(
-                            _pinCodeController.text, "vivek"));
-                  }
-                  print(selectedDate.toString().split(' ')[0]);
+                  _getResultes(context);
                 },
-                child: Text("Get"),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Get",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
+              Opacity(opacity: opacity,child: MyScreen(pinCode: _pinCodeController.text,)),
             ],
           ),
         );
       },
     );
+  }
+
+  _getResultes(BuildContext context) {
+    if (_pinCodeController.text.isNotEmpty) {
+      BlocProvider.of<PincodeBloc>(context)
+          .add(SessionRequestedByPin(_pinCodeController.text, DateTime.now()));
+    }
+    print(selectedDate.toString().split(' ')[0]);
   }
 
   _lowerContent(BuildContext context) {
@@ -78,35 +92,35 @@ class HomePage extends StatelessWidget {
         } else if (state is SessionLoading) {
           return Center(child: CircularProgressIndicator());
         } else if (state is SessionResultByPinCode) {
-          return Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return ListCoutn(
-                  centers: state.centers[index],
-                );
-              },
-              itemCount: state.centers.length,
-            ),
-          );
+          if (state.centers.length > 0) {
+            return Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return ListCoutn(
+                    centers: state.centers[index],
+                  );
+                },
+                itemCount: state.centers.length,
+              ),
+            );
+          } else {
+            return Expanded(
+              child: Center(
+                child: Text("No Slots available"),
+              ),
+            );
+          }
         } else if (state is SessionErrorOccured) {
           return Center(child: Text(state.e.toString()));
         }
-        return Container();
+        return Container(
+          child: Text(state.toString()),
+        );
       },
     );
   }
 
-  _datePicker(BuildContext context) {
-    return IconButton(
-        icon: FaIcon(FontAwesomeIcons.calendar),
-        onPressed: () async {
-          selectedDate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2021, 3),
-              lastDate: DateTime(2101));
-        });
-  }
+ 
 
   _pincodeFeild() {
     return BlocBuilder<PincodeBloc, PincodeState>(
@@ -114,8 +128,18 @@ class HomePage extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(15.0),
           child: TextFormField(
+            textInputAction: TextInputAction.go,
+            onFieldSubmitted: (String value) {
+              _getResultes(context);
+            },
+            autofocus: true,
+            focusNode: FocusNode(),
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+                labelText: "PinCode",
+                hintText: "PinCode",
+                border: OutlineInputBorder()),
             controller: _pinCodeController,
-            decoration: InputDecoration(hintText: "PinCode"),
           ),
         );
       },

@@ -1,3 +1,4 @@
+import 'package:cowin_vaccine_tracker/constants/constants.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +9,8 @@ class ListCoutn extends StatelessWidget {
   const ListCoutn({Key key, this.centers}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final int _capacity = centers.sessions[0].availableCapacity;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Card(
@@ -31,31 +34,49 @@ class ListCoutn extends StatelessWidget {
               SizedBox(
                 height: 7,
               ),
-              Container(
-                  padding: EdgeInsets.all(3),
-                  color: Colors.amber,
-                  child: Text(
-                    centers.sessions[0].vaccine,
-                    style: GoogleFonts.montserratAlternates(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      padding: EdgeInsets.all(3),
+                      color: Colors.amber,
+                      child: Text(
+                        centers.sessions[0].vaccine,
+                        style: GoogleFonts.montserratAlternates(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )),
+                  (_capacity != 0)
+                      ? Capacity(
+                          capacity: _capacity,
+                        )
+                      : Container(
+                          padding: EdgeInsets.all(3),
+                          color: Colors.red,
+                          child: Text(
+                            "Booked",
+                            style: GoogleFonts.montserratAlternates(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SubPart(
                     text1: "Date",
-                    text2: "Nov25",
+                    text2: centers.sessions[0].date,
                     color: Colors.black,
                   ),
                   SubPart(
-                    text1: "Time",
-                    text2: "3:30-4:30",
+                    text1: "min Age",
+                    text2: centers.sessions[0].minAgeLimit.toString() + "+",
                     color: Colors.black,
                   ),
                   SubPart(
-                    text1: "Paid",
-                    text2: "Free",
-                    color: Colors.red,
+                    text1: "Fee",
+                    text2: centers.feeType,
+                    color: Colors.blue,
                   ),
                 ],
               )
@@ -83,11 +104,28 @@ class SubPart extends StatelessWidget {
               fontWeight: FontWeight.bold, fontSize: 20, color: Colors.grey),
         ),
         Text(
-          "Nov25",
+          text2,
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.bold, fontSize: 20, color: color),
         ),
       ],
     );
+  }
+}
+
+class Capacity extends StatelessWidget {
+  final int capacity;
+
+  const Capacity({Key key, this.capacity}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(3),
+        color: capacity < 3 ? Colors.yellow : Colors.green,
+        child: Text(
+          capacity.toString(),
+          style: GoogleFonts.montserratAlternates(
+              color: Colors.white, fontWeight: FontWeight.bold),
+        ));
   }
 }
