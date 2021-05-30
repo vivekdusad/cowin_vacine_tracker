@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
-      watch(serverprovider).getDistrict(29);
+      watch(serverprovider).getCoronaData();
       return BlocProvider(
           create: (context) => PincodeBloc(server: watch(serverprovider)),
           child: Scaffold(
