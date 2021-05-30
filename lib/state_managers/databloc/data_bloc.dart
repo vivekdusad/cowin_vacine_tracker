@@ -10,7 +10,7 @@ part 'data_state.dart';
 
 class DataBloc extends Bloc<DataEvent, DataState> {
   Server server;
-  DataBloc() : super(DataInitial());
+  DataBloc({this.server}) : super(DataInitial());
 
   @override
   Stream<DataState> mapEventToState(
