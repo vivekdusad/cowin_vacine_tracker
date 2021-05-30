@@ -13,18 +13,32 @@ class ListCoutn extends StatelessWidget {
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25), // if you need this
+          borderRadius: BorderRadius.circular(20), // if you need this
           side: BorderSide(
             color: Colors.grey.withOpacity(0.3),
             width: 1,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(centers.name),
-              Text(centers.sessions[0].vaccine),
+              Text(
+                centers.name,
+                style: GoogleFonts.epilogue(fontSize: 24),
+              ),
+              SizedBox(
+                height: 7,
+              ),
+              Container(
+                  padding: EdgeInsets.all(3),
+                  color: Colors.amber,
+                  child: Text(
+                    centers.sessions[0].vaccine,
+                    style: GoogleFonts.montserratAlternates(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
