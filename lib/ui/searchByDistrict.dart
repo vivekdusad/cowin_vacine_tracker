@@ -33,7 +33,7 @@ class ByDistrictPage extends ConsumerWidget {
                 ],
               );
             }
-            return Container();
+            return _lowerContent();
           },
         ),
       ),
@@ -41,17 +41,21 @@ class ByDistrictPage extends ConsumerWidget {
   }
 
   Widget _lowerContent() {
+    
     return BlocBuilder<PincodeBloc, PincodeState>(
       builder: (context, state) {
+        var width = MediaQuery.of(context).size.width;
         print(state);
         if (state is SessionResultByDistrict) {
-          return ListView.builder(
-            itemBuilder: (context, index) {
-              return ListCoutn(
-                centers: state.centers[index],
-              );
-            },
-            itemCount: state.centers.length,
+          return Scrollbar(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return ListCoutn(
+                  centers: state.centers[index],
+                );
+              },
+              itemCount: state.centers.length,
+            ),
           );
         } else if (state is SessionLoading) {
           return CircularProgressIndicator();

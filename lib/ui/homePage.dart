@@ -78,14 +78,15 @@ class HomePage extends StatelessWidget {
         } else if (state is SessionLoading) {
           return Center(child: CircularProgressIndicator());
         } else if (state is SessionResultByPinCode) {
-          return ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return ListCoutn(
-                centers: state.centers[index],
-              );
-            },
-            itemCount: state.centers.length,
+          return Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return ListCoutn(
+                  centers: state.centers[index],
+                );
+              },
+              itemCount: state.centers.length,
+            ),
           );
         } else if (state is SessionErrorOccured) {
           return Center(child: Text(state.e.toString()));
@@ -121,4 +122,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
