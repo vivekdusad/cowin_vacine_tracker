@@ -37,8 +37,6 @@ class Centers {
       districtName: json['district_name'],
       blockName: json['block_name'],
       pincode: json['pincode'],
-      lat: json['lat'],
-      long: json['long'],
       from: json['from'],
       to: json['to'],
       feeType: json['fee_type'],

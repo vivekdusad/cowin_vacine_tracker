@@ -41,14 +41,13 @@ class ByDistrictPage extends ConsumerWidget {
   }
 
   Widget _lowerContent() {
-    
     return BlocBuilder<PincodeBloc, PincodeState>(
       builder: (context, state) {
-        var width = MediaQuery.of(context).size.width;
         print(state);
         if (state is SessionResultByDistrict) {
           return Scrollbar(
             child: ListView.builder(
+              physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return ListCoutn(
                   centers: state.centers[index],
@@ -81,7 +80,7 @@ class _UpperContentState extends State<UpperContent> {
   List<Districts> districts = [];
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
         DropdownButton<States>(
           focusColor: Colors.white,
