@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cowin_vaccine_tracker/constants/constants.dart';
+import 'package:cowin_vaccine_tracker/models/data.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +16,7 @@ abstract class Server {
   Future<List<Centers>> getSessionByPincode(String pincode, DateTime date);
   Future<List<States>> getStates();
   Future<List<Districts>> getDistrict(int state_id);
+  Future<CoronaData> getCoronaData();
 }
 
 class ServerBase extends Server {
@@ -121,6 +123,25 @@ class ServerBase extends Server {
       return Centers.fromJson(e);
     }).toList();
     return centers;
+  }
+
+  Future<CoronaData> getCoronaData() async {
+    Response _response = await _getData(url: dataUrl);
+    try {
+      if (_response.statusCode == 500) {
+        throw SocketException("internet");
+      }
+    } on SocketException {
+      throw CustomException(); //"Internet error"
+    } on FormatException {
+      throw CustomException(); //"Try Again Later"
+    } on HttpException {
+      throw CustomException(); //"Server Error"
+    }
+    final _results = jsonDecode(_response.body);
+    CoronaData coronaData = CoronaData.fromJson(_results);
+    print(coronaData.country);
+    return coronaData;
   }
 }
 

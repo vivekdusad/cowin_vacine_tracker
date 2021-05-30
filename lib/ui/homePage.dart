@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
-      watch(serverprovider).getDistrict(29);
+      watch(serverprovider).getCoronaData();
       return BlocProvider(
           create: (context) => PincodeBloc(server: watch(serverprovider)),
           child: Scaffold(
@@ -36,10 +36,11 @@ class HomePage extends StatelessWidget {
   }
 
   _upperContent(BuildContext context) {
-    double opacity =0;
+    double opacity = 0;
     return BlocBuilder<PincodeBloc, PincodeState>(
       builder: (context, state) {
-        if(state is SessionResultByDistrict||state is SessionResultByPinCode){
+        if (state is SessionResultByDistrict ||
+            state is SessionResultByPinCode) {
           opacity = 1;
         }
         return Form(
@@ -61,7 +62,11 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Opacity(opacity: opacity,child: MyScreenPinCode(pinCode: _pinCodeController.text,)),
+              Opacity(
+                  opacity: opacity,
+                  child: MyScreenPinCode(
+                    pinCode: _pinCodeController.text,
+                  )),
             ],
           ),
         );
@@ -119,8 +124,6 @@ class HomePage extends StatelessWidget {
       },
     );
   }
-
- 
 
   _pincodeFeild() {
     return BlocBuilder<PincodeBloc, PincodeState>(
