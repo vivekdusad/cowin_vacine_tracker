@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 //le commit me agian
 //le commit me agian
 abstract class Server {
-  Future<List<Centers>> getSessionByDistrict(String dist_id, String date);
+  Future<List<Centers>> getSessionByDistrict(String dist_id, DateTime date);
   Future<List<Centers>> getSessionByPincode(String pincode, DateTime date);
   Future<List<States>> getStates();
   Future<List<Districts>> getDistrict(int state_id);
@@ -97,10 +97,13 @@ class ServerBase extends Server {
   }
 
   Future<List<Centers>> getSessionByDistrict(
-      String dist_id, String date) async {
+      String dist_id, DateTime date) async {
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    final String formatted = formatter.format(date);
+    print(date);
     Response _response = await _getData(
         url: sessionsbaseUrl +
-            "calendarByDistrict?district_id=$dist_id&date=31-03-2021");
+            "calendarByDistrict?district_id=$dist_id&date=$formatted");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");

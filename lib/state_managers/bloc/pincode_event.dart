@@ -14,7 +14,7 @@ class SessionRequestedByPin extends PincodeEvent {
 
 class SessionRequestedByDistrict extends PincodeEvent {
   final String dis_code;
-  final String date;
+  final DateTime date;
   SessionRequestedByDistrict(this.dis_code, this.date);
 }
 

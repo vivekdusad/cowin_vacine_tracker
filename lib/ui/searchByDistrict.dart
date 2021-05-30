@@ -1,11 +1,15 @@
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/listcount.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../main.dart';
+
+Districts _selectedDistrict;
 
 class ByDistrictPage extends ConsumerWidget {
   @override
@@ -32,8 +36,16 @@ class ByDistrictPage extends ConsumerWidget {
                   _lowerContent(),
                 ],
               );
+            } else if (state is SessionResultByDistrict) {
+              return Column(
+                children: [
+                  MyScreenDistrict(
+                      dis_Code: _selectedDistrict.districtId.toString()),
+                  Expanded(child: _lowerContent()),
+                ],
+              );
             }
-            return _lowerContent();
+            return Container();
           },
         ),
       ),
@@ -49,9 +61,18 @@ class ByDistrictPage extends ConsumerWidget {
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                return ListCoutn(
-                  centers: state.centers[index],
-                );
+                //!bug here need to fix
+                final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                final String formatted = formatter.format(DateTime.now());
+
+                if (formatted
+                        .compareTo(state.centers[index].sessions[0].date) ==
+                    0) {
+                  return ListCoutn(
+                    centers: state.centers[index],
+                  );
+                }
+                return null;
               },
               itemCount: state.centers.length,
             ),
@@ -76,7 +97,7 @@ class UpperContent extends StatefulWidget {
 
 class _UpperContentState extends State<UpperContent> {
   States _slectedValue;
-  Districts _selectedDistrict;
+
   List<Districts> districts = [];
   @override
   Widget build(BuildContext context) {
@@ -144,7 +165,7 @@ class _UpperContentState extends State<UpperContent> {
           onPressed: () {
             BlocProvider.of<PincodeBloc>(context).add(
                 SessionRequestedByDistrict(
-                    _selectedDistrict.districtId.toString(), "vivek"));
+                    _selectedDistrict.districtId.toString(), DateTime.now()));
           },
           child: Text("Get"),
         ),

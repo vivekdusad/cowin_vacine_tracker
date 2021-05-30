@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Opacity(opacity: opacity,child: MyScreen(pinCode: _pinCodeController.text,)),
+              Opacity(opacity: opacity,child: MyScreenPinCode(pinCode: _pinCodeController.text,)),
             ],
           ),
         );
