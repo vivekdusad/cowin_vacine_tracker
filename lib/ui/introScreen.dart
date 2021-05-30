@@ -7,49 +7,72 @@ import 'package:get/get.dart';
 
 class Intro extends ConsumerWidget {
   @override
-  Widget build(BuildContext context,ScopedReader watch) {
+  Widget build(BuildContext context, ScopedReader watch) {
     // watch(serverprovider).getStates()
     return Scaffold(
       appBar: AppBar(
-                title: Text("Vaccine Finder"),
+        title: Text("Vaccine Finder"),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  Get.to(() => HomePage());
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  elevation: 15,
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Text(" PinCode",
+                        style: TextStyle(color: Colors.white, fontSize: 24)),
+                  ),
+                ),
               ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            MaterialButton(
-              color: Colors.blue,
-              onPressed: () {
-                
-                Get.to(() => HomePage());
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text("Search By PinCode",
-                    style: TextStyle(
-                      color: Colors.white,
-                    )),
+              InkWell(
+                onTap: () {
+                  Get.to(() => ByDistrictPage());
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  elevation: 15,
+                  color: Colors.red[500],
+                  child: Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Text(" District",
+                        style: TextStyle(color: Colors.white, fontSize: 24)),
+                  ),
+                ),
               ),
+            ],
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            SizedBox(
-              height: 30,
+            elevation: 15,
+            color: Colors.red[500],
+            child: Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: Text(" District",
+                  style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
-            MaterialButton(
-              color: Colors.blue,
-              onPressed: () {
-                Get.to(() => ByDistrictPage());
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text("Search By District",
-                    style: TextStyle(
-                      color: Colors.white,
-                    )),
-              ),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

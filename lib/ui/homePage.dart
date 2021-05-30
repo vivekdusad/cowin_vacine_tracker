@@ -50,6 +50,10 @@ class HomePage extends StatelessWidget {
               _pincodeFeild(),
               // _datePicker(context),
               MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0)),
+                hoverElevation: 16,
+                splashColor: Colors.amber,
                 color: Colors.blue,
                 onPressed: () {
                   _getResultes(context);
@@ -58,7 +62,9 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "Get",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -90,7 +96,11 @@ class HomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(child: Text("Search First")),
+                Center(
+                    child: Text(
+                  "Search First",
+                  style: TextStyle(fontSize: 24, color: Colors.red),
+                )),
               ],
             ),
           );

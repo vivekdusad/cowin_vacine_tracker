@@ -150,7 +150,7 @@ class _UpperContentState extends State<UpperContent> {
                 color: Colors.white,
                 border: Border.all()),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 0),
               child: DropdownButton<Districts>(
                 focusColor: Colors.white,
                 value: _selectedDistrict,
@@ -187,8 +187,9 @@ class _UpperContentState extends State<UpperContent> {
             height: 10,
           ),
           MaterialButton(
+            elevation: 5,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
+                borderRadius: BorderRadius.circular(10.0),
                 side: BorderSide(color: Colors.black)),
             color: Colors.blue,
             onPressed: () {
