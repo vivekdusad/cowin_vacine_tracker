@@ -110,6 +110,7 @@ class HomePage extends StatelessWidget {
           if (state.centers.length > 0) {
             return Expanded(
               child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ListCoutn(
                     centers: state.centers[index],

@@ -13,7 +13,7 @@ class Carousel extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             image: DecorationImage(
               image: NetworkImage(
-                  "https://www.freepik.com/free-vector/organic-flat-vaccination-campaign_13995230.htm#&position=13"),
+                  "https://image.freepik.com/free-vector/prevent-epidemic-rebound-concept-illustration_114360-3008.jpg"),
               fit: BoxFit.cover,
             ),
           ),
@@ -26,7 +26,7 @@ class Carousel extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             image: DecorationImage(
               image: NetworkImage(
-                  "https://www.freepik.com/free-vector/organic-flat-vaccination-campaign_13995230.htm#&position=13"),
+                  "https://image.freepik.com/free-vector/prevent-epidemic-rebound-concept-illustration_114360-3008.jpg"),
               fit: BoxFit.cover,
             ),
           ),
