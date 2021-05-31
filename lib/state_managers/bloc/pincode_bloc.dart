@@ -24,7 +24,7 @@ class PincodeBloc extends Bloc<PincodeEvent, PincodeState> {
       try {
         List<Centers> centers =
             await server.getSessionByDistrict(event.dis_code, event.date);
-        yield SessionResultByDistrict(centers);
+        yield SessionResultByDistrict(centers,event.date);
       } on Exception catch (e) {
         yield SessionErrorOccured(e);
       }

@@ -81,6 +81,7 @@ class HomePage extends StatelessWidget {
   }
 
   _getResultes(BuildContext context) {
+    FocusScope.of(context).unfocus();
     if (_pinCodeController.text.isNotEmpty) {
       BlocProvider.of<PincodeBloc>(context)
           .add(SessionRequestedByPin(_pinCodeController.text, DateTime.now()));

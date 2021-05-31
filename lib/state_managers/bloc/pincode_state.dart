@@ -17,7 +17,8 @@ class SessionResultByPinCode extends PincodeState {
 
 class SessionResultByDistrict extends PincodeState {
   final List<Centers> centers;
-  SessionResultByDistrict(this.centers);
+  DateTime selectedTime;
+  SessionResultByDistrict(this.centers,this.selectedTime);
 }
 
 class SessionErrorOccured extends PincodeState {
@@ -29,6 +30,7 @@ class StateListLoaded extends PincodeState {
   final List<States> states;
   StateListLoaded(this.states);
 }
+
 class DistrictListLoaded extends PincodeState {
   final List<Districts> districts;
   DistrictListLoaded(this.districts);

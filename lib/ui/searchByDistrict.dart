@@ -51,26 +51,31 @@ class ByDistrictPage extends ConsumerWidget {
       builder: (context, state) {
         print(state);
         if (state is SessionResultByDistrict) {
-          return Scrollbar(
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                //!bug here need to fix
-                final DateFormat formatter = DateFormat('dd-MM-yyyy');
-                final String formatted = formatter.format(DateTime.now());
+          return state.centers.length == 0
+              ? Center(
+                  child: Text("No Slots Found"),
+                )
+              : Scrollbar(
+                  child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      //!bug here need to fix
+                      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                      final String formatted =
+                          formatter.format(state.selectedTime);
 
-                if (formatted
-                        .compareTo(state.centers[index].sessions[0].date) ==
-                    0) {
-                  return ListCoutn(
-                    centers: state.centers[index],
-                  );
-                }
-                return null;
-              },
-              itemCount: state.centers.length,
-            ),
-          );
+                      if (formatted.compareTo(
+                              state.centers[index].sessions[0].date) ==
+                          0) {
+                        return ListCoutn(
+                          centers: state.centers[index],
+                        );
+                      }
+                      return null;
+                    },
+                    itemCount: state.centers.length,
+                  ),
+                );
         } else if (state is SessionLoading) {
           return CircularProgressIndicator();
         } else {

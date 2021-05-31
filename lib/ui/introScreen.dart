@@ -161,7 +161,7 @@ class GridItem extends StatelessWidget {
                   count,
                   style: TextStyle(
                     color: textColor,
-                    fontSize: 30,
+                    fontSize: 27,
                   ),
                 ),
               ],
