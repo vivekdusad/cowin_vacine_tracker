@@ -1,10 +1,76 @@
-# cowin_vaccine_tracker
+<p align="center">
+  <a href="https://flutter.io/">
+    <img src="https://diegolaballos.com/files/images/flutter-icon.jpg" alt="Logo" width=72 height=72>
+  </a>
 
-A new Flutter project.
+  <h3 align="center">Cowin vacine tracker</h3>
 
-## Getting Started
+  <p align="center">
+    Cowin vaccine tracker project made with much  :heart: . Contains Covid updates, Serch by pincode as well as district functionality, and much more!
+    <br>
+    <br>
+    <a href="https://github.com/vivekdusad/cowin_vacine_tracker/issues/new">Report bug</a>
+    ·
+    <a href="https://github.com/vivekdusad/cowin_vacine_tracker/issues/new">Request feature</a>
+  </p>
+</p>
 
-This project is a starting point for a Flutter application.
+<h4 align="center"> 
+	 Status: Finished
+</h4>
+
+<p align="center">
+ <a href="#app-feartures">App Features</a> •
+ <a href="#screenshots">Screenshots</a> • 
+ <a href="#quick-start">Quick start</a> •
+ <a href="#creators">Creators</a> • 
+</p>
+---
+
+## App Features:
+
+* Covid updates
+* find vaccine centers near you by Pincode
+* find vaccine centers near you by District
+
+---
+
+## Screenshots:
+
+<p align="center">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/1.png">
+</p>
+
+<p align="center">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/2.png">
+</p>
+
+<p align="center">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/3.png">
+</p>
+
+
+---
+
+## Quick start
+
+This is a flutter Cowin vaccine tracker app. You should follow the instructions in the [official documentation](https://flutter.io/docs/get-started/install).
+
+---
+
+
+
+## Creators
+
+**Vivek Khandelwal**
+
+- <https://github.com/vivekdusad>
+
+**Ayush Sunariya**
+
+- <https://github.com/ayush478>
+
+---
 
 A few resources to get you started if this is your first Flutter project:
 
