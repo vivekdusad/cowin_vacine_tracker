@@ -82,7 +82,6 @@ class HomePage extends StatelessWidget {
       BlocProvider.of<PincodeBloc>(context)
           .add(SessionRequestedByPin(_pinCodeController.text, DateTime.now()));
     }
-    print(selectedDate.toString().split(' ')[0]);
   }
 
   _lowerContent(BuildContext context) {
@@ -139,7 +138,7 @@ class HomePage extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(15.0),
           child: TextFormField(
-            textInputAction: TextInputAction.go,       
+            textInputAction: TextInputAction.go,
             autofocus: true,
             focusNode: FocusNode(),
             keyboardType: TextInputType.number,
