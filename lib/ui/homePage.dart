@@ -5,6 +5,7 @@ import 'package:cowin_vaccine_tracker/ui/widgets/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -77,12 +78,11 @@ class HomePage extends StatelessWidget {
   }
 
   _getResultes(BuildContext context) {
-    FocusScope.of(context).unfocus();
+    FocusScope.of(context).unfocus(); //
     if (_pinCodeController.text.isNotEmpty) {
       BlocProvider.of<PincodeBloc>(context)
           .add(SessionRequestedByPin(_pinCodeController.text, DateTime.now()));
     }
-    print(selectedDate.toString().split(' ')[0]);
   }
 
   _lowerContent(BuildContext context) {
@@ -102,7 +102,9 @@ class HomePage extends StatelessWidget {
             ),
           );
         } else if (state is SessionLoading) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+              child: Lottie.network(
+                  "https://assets9.lottiefiles.com/packages/lf20_tnrzlN.json"));
         } else if (state is SessionResultByPinCode) {
           if (state.centers.length > 0) {
             return Expanded(
@@ -139,7 +141,7 @@ class HomePage extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(15.0),
           child: TextFormField(
-            textInputAction: TextInputAction.go,       
+            textInputAction: TextInputAction.go,
             autofocus: true,
             focusNode: FocusNode(),
             keyboardType: TextInputType.number,
