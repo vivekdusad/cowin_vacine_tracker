@@ -1,4 +1,3 @@
-import 'package:cowin_vaccine_tracker/constants/constants.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

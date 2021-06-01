@@ -4,7 +4,6 @@ import 'package:cowin_vaccine_tracker/constants/constants.dart';
 import 'package:cowin_vaccine_tracker/models/data.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -12,10 +11,10 @@ import 'package:intl/intl.dart';
 //le commit me agian
 //le commit me agian
 abstract class Server {
-  Future<List<Centers>> getSessionByDistrict(String dist_id, DateTime date);
+  Future<List<Centers>> getSessionByDistrict(String distId, DateTime date);
   Future<List<Centers>> getSessionByPincode(String pincode, DateTime date);
   Future<List<States>> getStates();
-  Future<List<Districts>> getDistrict(int state_id);
+  Future<List<Districts>> getDistrict(int stateId);
   Future<CoronaData> getCoronaData();
 }
 
@@ -49,9 +48,9 @@ class ServerBase extends Server {
     return centers;
   }
 
-  Future<List<Districts>> getDistrict(int state_id) async {
+  Future<List<Districts>> getDistrict(int stateId) async {
     Response _response =
-        await _getData(url: locationbaseUrl + "districts/$state_id");
+        await _getData(url: locationbaseUrl + "districts/$stateId");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");
@@ -99,13 +98,13 @@ class ServerBase extends Server {
   }
 
   Future<List<Centers>> getSessionByDistrict(
-      String dist_id, DateTime date) async {
+      String distId, DateTime date) async {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     final String formatted = formatter.format(date);
     print(date);
     Response _response = await _getData(
         url: sessionsbaseUrl +
-            "calendarByDistrict?district_id=$dist_id&date=$formatted");
+            "calendarByDistrict?district_id=$distId&date=$formatted");
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");

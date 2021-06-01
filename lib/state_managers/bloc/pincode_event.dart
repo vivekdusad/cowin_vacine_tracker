@@ -7,20 +7,20 @@ abstract class PincodeEvent extends Equatable {
 }
 
 class SessionRequestedByPin extends PincodeEvent {
-  final String pin_code;
+  final String pinCode;
   final DateTime date;
-  SessionRequestedByPin(this.pin_code, this.date);
+  SessionRequestedByPin(this.pinCode, this.date);
 }
 
 class SessionRequestedByDistrict extends PincodeEvent {
-  final String dis_code;
+  final String disCode;
   final DateTime date;
-  SessionRequestedByDistrict(this.dis_code, this.date);
+  SessionRequestedByDistrict(this.disCode, this.date);
 }
 
 class StateListRequested extends PincodeEvent {}
 
 class DistrictListRequested extends PincodeEvent {
-  final int state_id;
-  DistrictListRequested(this.state_id);
+  final int stateId;
+  DistrictListRequested(this.stateId);
 }

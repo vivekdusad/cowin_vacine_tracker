@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
 
+// ignore: must_be_immutable
 class MyScreenPinCode extends StatefulWidget {
   String pinCode;
   MyScreenPinCode({
@@ -53,11 +54,12 @@ class _MyScreenPinCodeState extends State<MyScreenPinCode> {
 }
 
 
+// ignore: must_be_immutable
 class MyScreenDistrict extends StatefulWidget {
-  String dis_Code;
+  String disCode;
   MyScreenDistrict({
     Key key,
-    @required this.dis_Code,
+    @required this.disCode,
   }) : super(key: key);
   @override
   _MyScreenDistrict createState() => _MyScreenDistrict();
@@ -85,7 +87,7 @@ class _MyScreenDistrict extends State<MyScreenDistrict> {
                   _dayFormatter.format(date) + _monthFormatter.format(date)),
               onPressed: () {
                 BlocProvider.of<PincodeBloc>(context)
-                    .add(SessionRequestedByDistrict(widget.dis_Code, date));
+                    .add(SessionRequestedByDistrict(widget.disCode, date));
               },
             );
           },

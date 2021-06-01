@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
-import 'package:cowin_vaccine_tracker/repos/pincodeRepo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
@@ -23,7 +22,7 @@ class PincodeBloc extends Bloc<PincodeEvent, PincodeState> {
       yield SessionLoading();
       try {
         List<Centers> centers =
-            await server.getSessionByDistrict(event.dis_code, event.date);
+            await server.getSessionByDistrict(event.disCode, event.date);
         yield SessionResultByDistrict(centers,event.date);
       } on Exception catch (e) {
         yield SessionErrorOccured(e);
@@ -32,7 +31,7 @@ class PincodeBloc extends Bloc<PincodeEvent, PincodeState> {
       yield SessionLoading();
       try {
         List<Centers> centers =
-            await server.getSessionByPincode(event.pin_code, event.date);
+            await server.getSessionByPincode(event.pinCode, event.date);
         yield SessionResultByPinCode(centers);
       } on Exception catch (e) {
         yield SessionErrorOccured(e);
@@ -49,7 +48,7 @@ class PincodeBloc extends Bloc<PincodeEvent, PincodeState> {
      else if (event is DistrictListRequested) {
       yield SessionLoading();
       try {
-        List<Districts> centers = await server.getDistrict(event.state_id);
+        List<Districts> centers = await server.getDistrict(event.stateId);
         yield DistrictListLoaded(centers);
       } on Exception catch (e) {
         yield SessionErrorOccured(e);

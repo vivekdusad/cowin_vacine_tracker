@@ -1,4 +1,3 @@
-import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/web/server.dart';
 
 class PinCodeRepo {

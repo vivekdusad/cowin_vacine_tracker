@@ -1,5 +1,4 @@
 import 'package:cowin_vaccine_tracker/repos/pincodeRepo.dart';
-import 'package:cowin_vaccine_tracker/ui/homePage.dart';
 import 'package:cowin_vaccine_tracker/ui/introScreen.dart';
 import 'package:cowin_vaccine_tracker/web/server.dart';
 import 'package:flutter/material.dart';

@@ -15,6 +15,7 @@ class SessionResultByPinCode extends PincodeState {
   SessionResultByPinCode(this.centers);
 }
 
+// ignore: must_be_immutable
 class SessionResultByDistrict extends PincodeState {
   final List<Centers> centers;
   DateTime selectedTime;

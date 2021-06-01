@@ -34,7 +34,7 @@ class ByDistrictPage extends ConsumerWidget {
               return Column(
                 children: [
                   MyScreenDistrict(
-                      dis_Code: _selectedDistrict.districtId.toString()),
+                      disCode: _selectedDistrict.districtId.toString()),
                   Expanded(child: _lowerContent()),
                 ],
               );
