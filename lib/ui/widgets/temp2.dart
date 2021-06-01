@@ -26,7 +26,7 @@ class Carousel extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             image: DecorationImage(
               image: NetworkImage(
-                  "https://image.freepik.com/free-vector/prevent-epidemic-rebound-concept-illustration_114360-3008.jpg"),
+                  "https://www.lifecarediagnostics.com/wp-content/themes/lifecare/life-care/images/big-4.png"),
               fit: BoxFit.cover,
             ),
           ),
@@ -39,7 +39,7 @@ class Carousel extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             image: DecorationImage(
               image: NetworkImage(
-                  "https://media.healthdirect.org.au/images/inline/original/covid-cold-flu-symptoms-bd24a5.png"),
+                  "https://www.cvpdaytoneyedoctors.com/wp-content/uploads/2020/06/COVID-blog-large.jpg"),
               fit: BoxFit.cover,
             ),
           ),
