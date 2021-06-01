@@ -145,7 +145,12 @@ class HomePage extends StatelessWidget {
           child: TextFormField(
             textInputAction: TextInputAction.go,
             onFieldSubmitted: (String value) {
-              _getResultes(context);
+              FocusScope.of(context).unfocus();
+              if (_pinCodeController.text.isNotEmpty) {
+                BlocProvider.of<PincodeBloc>(context).add(SessionRequestedByPin(
+                    _pinCodeController.text, DateTime.now()));
+              }
+              print(selectedDate.toString().split(' ')[0]);
             },
             autofocus: true,
             focusNode: FocusNode(),
