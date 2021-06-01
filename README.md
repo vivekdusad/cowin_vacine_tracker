@@ -38,15 +38,15 @@
 ## Screenshots:
 
 <p align="center">
-  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/master/Screenshots/1.png">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/1.png">
 </p>
 
 <p align="center">
-  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/master/Screenshots/2.png">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/1.png">
 </p>
 
 <p align="center">
-  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/master/Screenshots/3.png">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/1.png">
 </p>
 
 
