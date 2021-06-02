@@ -5,6 +5,7 @@ import 'package:cowin_vaccine_tracker/ui/widgets/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 // ignore: must_be_immutable
@@ -16,7 +17,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
-      watch(serverprovider).getCoronaData();
+      watch(serverprovider).getStateCorona();
       return BlocProvider(
           create: (context) => PincodeBloc(server: watch(serverprovider)),
           child: Scaffold(
@@ -95,17 +96,23 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(
-                    child: Text(
-                  "Search First",
-                  style: TextStyle(fontSize: 24, color: Colors.red),
-                )),
+                    child: Lottie.network(
+                        "https://assets6.lottiefiles.com/packages/lf20_d1bjrsyg.json")),
               ],
             ),
           );
         } else if (state is SessionLoading) {
           return Center(
-              child: Lottie.network(
-                  "https://assets9.lottiefiles.com/packages/lf20_tnrzlN.json"));
+              child: Column(
+            children: [
+              Lottie.network(
+                  "https://assets9.lottiefiles.com/packages/lf20_tnrzlN.json"),
+              Text(
+                "Searching...",
+                style: GoogleFonts.ubuntu(fontSize: 20),
+              ),
+            ],
+          ));
         } else if (state is SessionResultByPinCode) {
           if (state.centers.length > 0) {
             return Expanded(

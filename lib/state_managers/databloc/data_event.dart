@@ -8,3 +8,4 @@ abstract class DataEvent extends Equatable {
 }
 
 class CoronaDataRequested extends DataEvent{}
+class CoronaDataRequestedByState extends DataEvent{}

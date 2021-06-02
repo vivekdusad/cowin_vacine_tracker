@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cowin_vaccine_tracker/constants/constants.dart';
 import 'package:cowin_vaccine_tracker/models/data.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
+import 'package:cowin_vaccine_tracker/models/stateCorna.dart';
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -16,6 +17,7 @@ abstract class Server {
   Future<List<States>> getStates();
   Future<List<Districts>> getDistrict(int stateId);
   Future<CoronaData> getCoronaData();
+  Future<List<StateCorona>> getStateCorona();
 }
 
 class ServerBase extends Server {
@@ -141,6 +143,29 @@ class ServerBase extends Server {
     CoronaData coronaData = CoronaData.fromJson(_results);
     print(coronaData.country);
     return coronaData;
+  }
+
+  @override
+  Future<List<StateCorona>> getStateCorona() async {
+    Response _response = await _getData(url: coronaDataURl);
+    try {
+      if (_response.statusCode == 500) {
+        throw SocketException("internet");
+      }
+    } on SocketException {
+      throw CustomException(); //"Internet error"
+    } on FormatException {
+      throw CustomException(); //"Try Again Later"
+    } on HttpException {
+      throw CustomException(); //"Server Error"
+    }
+    final _results = jsonDecode(_response.body);
+    // print(_results[0]);
+    var list = _results as List;
+    List<StateCorona> corona =
+        list.map((e) => StateCorona.fromJson(e)).toList();
+    print(corona[0].confirmed);
+    return corona;
   }
 }
 
