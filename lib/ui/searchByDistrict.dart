@@ -59,7 +59,6 @@ class ByDistrictPage extends ConsumerWidget {
                   child: ListView.builder(
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
-                      //!bug here need to fix
                       final DateFormat formatter = DateFormat('dd-MM-yyyy');
                       final String formatted =
                           formatter.format(state.selectedTime);

@@ -22,3 +22,10 @@ class CoronaDataErrorOccured extends DataState {
 
   CoronaDataErrorOccured(this.e);
 }
+
+class CoronaDataByStateLoading extends DataState {}
+
+class CoronaDataByStateLoaded extends DataState {
+  final List<StateCorona> corona;
+  CoronaDataByStateLoaded({this.corona});
+}
