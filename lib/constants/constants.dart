@@ -37,7 +37,7 @@ List<String> states = [
   "Chandigarh",
   "Dadra and Nagar Haveli and Daman & Diu",
   "The Government of NCT of Delhi",
-  "Jammu & Kashmir",
+  "Jammu and Kashmir",
   "Ladakh",
   "Lakshadweep",
   "Puducherry",
