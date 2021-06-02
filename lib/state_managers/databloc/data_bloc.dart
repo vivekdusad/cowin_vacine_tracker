@@ -25,14 +25,6 @@ class DataBloc extends Bloc<DataEvent, DataState> {
       } on Exception catch (e) {
         yield CoronaDataErrorOccured(e);
       }
-    } else if (event is CoronaDataRequestedByState) {
-      yield CoronaDataByStateLoading();
-      try {
-        List<StateCorona> corona = await server.getStateCorona();
-        yield CoronaDataByStateLoaded(corona: corona);
-      } on Exception catch (e) {
-        yield CoronaDataErrorOccured(e);
-      }
     }
   }
 }

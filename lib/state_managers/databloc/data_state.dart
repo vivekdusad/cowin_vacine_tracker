@@ -8,24 +8,16 @@ abstract class DataState extends Equatable {
 }
 
 class DataInitial extends DataState {}
-
 class CoronaDataLoaded extends DataState {
   final CoronaData coronaData;
 
   CoronaDataLoaded(this.coronaData);
 }
-
 class CoronaDataLoading extends DataState {}
-
 class CoronaDataErrorOccured extends DataState {
   final Exception e;
-
   CoronaDataErrorOccured(this.e);
 }
 
-class CoronaDataByStateLoading extends DataState {}
 
-class CoronaDataByStateLoaded extends DataState {
-  final List<StateCorona> corona;
-  CoronaDataByStateLoaded({this.corona});
-}
+

@@ -1,5 +1,4 @@
 import 'package:cowin_vaccine_tracker/models/data.dart';
-import 'package:cowin_vaccine_tracker/ui/widgets/girdItem.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/gridCountry.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/gridStates.dart';
 import 'package:flutter/material.dart';

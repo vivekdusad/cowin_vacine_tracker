@@ -7,5 +7,11 @@ abstract class DataEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CoronaDataRequested extends DataEvent{}
-class CoronaDataRequestedByState extends DataEvent{}
+class CoronaDataRequested extends DataEvent {}
+
+class CoronaDataRequestedByState extends DataEvent {
+  final String coronaState;
+
+  CoronaDataRequestedByState({this.coronaState});
+  
+}
