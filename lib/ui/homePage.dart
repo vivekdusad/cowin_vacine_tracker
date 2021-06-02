@@ -20,6 +20,7 @@ class HomePage extends StatelessWidget {
       return BlocProvider(
           create: (context) => PincodeBloc(server: watch(serverprovider)),
           child: Scaffold(
+              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 title: Text("Search By Pincode"),
               ),

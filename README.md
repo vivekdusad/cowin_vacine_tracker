@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://flutter.io/">
-    <img src="https://diegolaballos.com/files/images/flutter-icon.jpg" alt="Logo" width=72 height=72>
+    <img src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/4.png" alt="Logo" width=72 height=72>
   </a>
 
   <h3 align="center">Cowin vacine tracker</h3>
@@ -38,15 +38,15 @@
 ## Screenshots:
 
 <p align="center">
-  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/1.png">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/1.png" width=300 height=550>
 </p>
 
 <p align="center">
-  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/2.png">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/2.png" width=300 height=550>
 </p>
 
 <p align="center">
-  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/3.png">
+  <img alt="cases" src="https://github.com/vivekdusad/cowin_vacine_tracker/blob/main/Screenshots/3.png" width=300 height=550>
 </p>
 
 

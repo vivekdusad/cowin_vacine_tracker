@@ -101,110 +101,125 @@ class _UpperContentState extends State<UpperContent> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-            decoration: BoxDecoration(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white,
-                border: Border.all()),
-            child: DropdownButton<States>(
-              focusColor: Colors.white,
+                color: Color(0xFFdeedf0),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<States>(
+                  focusColor: Colors.white,
 
-              value: _slectedValue,
-              //elevation: 5,
-              style: TextStyle(color: Colors.white),
-              iconEnabledColor: Colors.black,
-              items: widget.states.map<DropdownMenuItem<States>>((value) {
-                return DropdownMenuItem<States>(
-                  value: value,
-                  child: Text(
-                    value.stateName,
-                    style: TextStyle(color: Colors.black),
+                  value: _slectedValue,
+                  //elevation: 5,
+                  style: TextStyle(color: Colors.white),
+                  iconEnabledColor: Colors.black,
+                  items: widget.states.map<DropdownMenuItem<States>>((value) {
+                    return DropdownMenuItem<States>(
+                      value: value,
+                      child: Text(
+                        value.stateName,
+                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      ),
+                    );
+                  }).toList(),
+                  hint: Text(
+                    "Please choose a State",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500),
                   ),
-                );
-              }).toList(),
-              hint: Text(
-                "Please choose a State",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
-              ),
-              onChanged: (States value) async {
-                districts.clear();
-                _selectedDistrict = null;
-                districts = await ProviderContainer()
-                    .read(serverprovider)
-                    .getDistrict(value.stateId);
-                // print("loaded");
-                setState(() {
-                  _slectedValue = value;
-                });
-              },
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white,
-                border: Border.all()),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 0),
-              child: DropdownButton<Districts>(
-                focusColor: Colors.white,
-                value: _selectedDistrict,
-                //elevation: 5,
-                style: TextStyle(
-                  color: Colors.white,
+                  onChanged: (States value) async {
+                    districts.clear();
+                    _selectedDistrict = null;
+                    districts = await ProviderContainer()
+                        .read(serverprovider)
+                        .getDistrict(value.stateId);
+                    // print("loaded");
+                    setState(() {
+                      _slectedValue = value;
+                    });
+                  },
                 ),
-                iconEnabledColor: Colors.black,
-                items: districts.map<DropdownMenuItem<Districts>>((value) {
-                  return DropdownMenuItem<Districts>(
-                    value: value,
-                    child: Text(
-                      value.districtName,
-                      style: TextStyle(color: Colors.black),
+              ),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Color(0xFFdeedf0),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: DropdownButtonHideUnderline(
+                  child: new Theme(
+                    data: Theme.of(context).copyWith(
+                      canvasColor: Colors.white,
                     ),
-                  );
-                }).toList(),
-                hint: Text(
-                  "Please choose a District",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500),
+                    child: DropdownButton<Districts>(
+                      focusColor: Colors.white,
+                      value: _selectedDistrict,
+                      //elevation: 5,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      iconEnabledColor: Colors.black,
+                      items:
+                          districts.map<DropdownMenuItem<Districts>>((value) {
+                        return DropdownMenuItem<Districts>(
+                          value: value,
+                          child: Text(
+                            value.districtName,
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                          ),
+                        );
+                      }).toList(),
+                      hint: Text(
+                        "Please choose a District",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (Districts value) {
+                        setState(() {
+                          _selectedDistrict = value;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-                onChanged: (Districts value) {
-                  setState(() {
-                    _selectedDistrict = value;
-                  });
-                },
               ),
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          MaterialButton(
-            elevation: 5,
-            shape: RoundedRectangleBorder(
+            SizedBox(
+              height: 30,
+            ),
+            MaterialButton(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(color: Colors.black)),
-            color: Colors.blue,
-            onPressed: () {
-              BlocProvider.of<PincodeBloc>(context).add(
-                  SessionRequestedByDistrict(
-                      _selectedDistrict.districtId.toString(), DateTime.now()));
-            },
-            child: Text("Get"),
-          ),
-        ],
+              ),
+              color: Colors.amber,
+              onPressed: () {
+                BlocProvider.of<PincodeBloc>(context).add(
+                    SessionRequestedByDistrict(
+                        _selectedDistrict.districtId.toString(),
+                        DateTime.now()));
+              },
+              child: Text("Get"),
+            ),
+          ],
+        ),
       ),
     );
   }
