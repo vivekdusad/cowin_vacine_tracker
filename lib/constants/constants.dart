@@ -33,10 +33,10 @@ List<String> states = [
   "Uttarakhand",
   "Uttar Pradesh",
   "West Bengal",
-  "Andaman and Nicobar Islands"
+  "Andaman and Nicobar Islands",
   "Chandigarh",
-  "Dadra and Nagar Haveli and Daman & Diu",
-  "The Government of NCT of Delhi",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi",
   "Jammu and Kashmir",
   "Ladakh",
   "Lakshadweep",

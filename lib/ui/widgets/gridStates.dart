@@ -26,7 +26,7 @@ class _GridStatesState extends State<GridStates> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   StateDropDown(),
                 ],
@@ -38,8 +38,12 @@ class _GridStatesState extends State<GridStates> {
                     return StatesContainers(
                       corona: state.corona,
                     );
+                  } else if (state is CoronaDataErrorOccureed) {
+                    return Center(
+                      child: Text(state.e.toString()),
+                    );
                   }
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 },
               )
             ],
@@ -103,33 +107,44 @@ class _StateDropDownState extends State<StateDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      focusColor: Colors.white,
-      value: _chosenValue,
-      //elevation: 5,
-      style: TextStyle(color: Colors.white),
-      iconEnabledColor: Colors.black,
-      items: states.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(
-            value,
-            style: TextStyle(color: Colors.black),
-          ),
-        );
-      }).toList(),
-      hint: Text(
-        _chosenValue,
-        style: TextStyle(
-            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Color(0xFFdeedf0),
       ),
-      onChanged: (String value) {
-        setState(() {
-          _chosenValue = value;
-        });
-        BlocProvider.of<StateBloc>(context)
-            .add(CoronaDataRequestedByState(coronaState: _chosenValue));
-      },
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          underline: null,
+          focusColor: Colors.white,
+          value: _chosenValue,
+          //elevation: 5,
+          style: TextStyle(color: Colors.white),
+          iconEnabledColor: Colors.black,
+          items: states.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: TextStyle(color: Colors.black),
+              ),
+            );
+          }).toList(),
+          hint: Text(
+            _chosenValue,
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          onChanged: (String value) {
+            setState(() {
+              _chosenValue = value;
+            });
+            BlocProvider.of<StateBloc>(context)
+                .add(CoronaDataRequestedByState(coronaState: _chosenValue));
+          },
+        ),
+      ),
     );
   }
 }

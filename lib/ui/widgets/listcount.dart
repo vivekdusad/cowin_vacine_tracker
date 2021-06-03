@@ -78,7 +78,13 @@ class ListCoutn extends StatelessWidget {
                     color: Colors.blue,
                   ),
                 ],
-              )
+              ),
+              _capacity > 0
+                  ? MaterialButton(
+                      onPressed: () {},
+                      child: Text("Book Now"),
+                    )
+                  : Null,
             ],
           ),
         ),

@@ -41,7 +41,7 @@ class _SelectionState extends State<Selection> {
             ],
           ),
           Container(
-            height: 550,
+            height: 600,
             child: TabBarView(children: [
               GridIndia(
                 coronaData: widget.coronaData,
