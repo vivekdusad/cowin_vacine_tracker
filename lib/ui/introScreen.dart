@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -14,6 +15,32 @@ class Intro extends StatefulWidget {
 }
 
 class _IntroState extends State<Intro> {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var androidInitalize = new AndroidInitializationSettings('splash');
+    var iosInitalize = IOSInitializationSettings();
+    var initalizationsSettings = new InitializationSettings(
+        android: androidInitalize, iOS: iosInitalize);
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(initalizationsSettings,
+        onSelectNotification: onNotificationSelected);
+  }
+
+  _showNotifications() async {
+    var androidDetails = new AndroidNotificationDetails(
+        "Channel ID", "Vaccine Finder", "Vaccine is available now");
+    var iosDetails = new IOSNotificationDetails();
+    var generalNotificationDetails =
+        new NotificationDetails(android: androidDetails, iOS: iosDetails);
+    await flutterLocalNotificationsPlugin.show(0, "Vaccine Available",
+        "Vaccine is available now in your area", generalNotificationDetails);
+
+    
+  }
+
   @override
   Widget build(
     BuildContext context,
@@ -24,6 +51,10 @@ class _IntroState extends State<Intro> {
       return BlocProvider(
           create: (context) => databloc,
           child: Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: _showNotifications,
+                child: Icon(Icons.notifications_active),
+              ),
               appBar: AppBar(
                 title: Text("Vaccine Finder"),
               ),
@@ -56,4 +87,6 @@ class _IntroState extends State<Intro> {
               )));
     });
   }
+
+  Future onNotificationSelected(String payload) async {}
 }
