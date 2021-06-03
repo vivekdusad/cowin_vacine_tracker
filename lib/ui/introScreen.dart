@@ -1,6 +1,7 @@
 import 'package:cowin_vaccine_tracker/ui/widgets/TabsWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/buttons.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/crousel.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/notifyMe.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/searchText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+
+import 'homePage.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -37,8 +41,6 @@ class _IntroState extends State<Intro> {
         new NotificationDetails(android: androidDetails, iOS: iosDetails);
     await flutterLocalNotificationsPlugin.show(0, "Vaccine Available",
         "Vaccine is available now in your area", generalNotificationDetails);
-
-    
   }
 
   @override
@@ -52,7 +54,9 @@ class _IntroState extends State<Intro> {
           create: (context) => databloc,
           child: Scaffold(
               floatingActionButton: FloatingActionButton(
-                onPressed: _showNotifications,
+                onPressed: () {
+                  Get.to(() => NotifyMe());
+                },
                 child: Icon(Icons.notifications_active),
               ),
               appBar: AppBar(
