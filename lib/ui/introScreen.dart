@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
 
-
 class Intro extends StatefulWidget {
   @override
   _IntroState createState() => _IntroState();
@@ -30,6 +29,7 @@ class _IntroState extends State<Intro> {
               ),
               body: BlocBuilder<DataBloc, DataState>(
                 builder: (context, state) {
+                  print(state);
                   if (state is CoronaDataLoading) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is CoronaDataErrorOccured) {
@@ -57,4 +57,3 @@ class _IntroState extends State<Intro> {
     });
   }
 }
-
