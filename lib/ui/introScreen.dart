@@ -18,7 +18,6 @@ class _IntroState extends State<Intro> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     var androidInitalize = new AndroidInitializationSettings('splash');
     var iosInitalize = IOSInitializationSettings();
@@ -72,7 +71,7 @@ class _IntroState extends State<Intro> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          crousel(),
+                          Crousel(),
                           searchText(),
                           Buttons(),
                           Selection(

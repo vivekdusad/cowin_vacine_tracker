@@ -24,6 +24,7 @@ void callbackDispatcher() {
       FlutterLocalNotificationsPlugin flip =
           new FlutterLocalNotificationsPlugin();
       var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+      // ignore: non_constant_identifier_names
       var IOS = new IOSInitializationSettings();
       var settings = new InitializationSettings(android: android, iOS: IOS);
       flip.initialize(settings);

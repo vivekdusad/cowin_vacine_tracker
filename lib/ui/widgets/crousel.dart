@@ -1,8 +1,8 @@
 import 'package:cowin_vaccine_tracker/ui/widgets/temp2.dart';
 import 'package:flutter/material.dart';
 
-class crousel extends StatelessWidget {
-  const crousel({
+class Crousel extends StatelessWidget {
+  const Crousel({
     Key key,
   }) : super(key: key);
 
