@@ -60,7 +60,7 @@ class _IntroState extends State<Intro> {
               ),
               body: BlocBuilder<DataBloc, DataState>(
                 builder: (context, state) {
-                  print(state);
+
                   if (state is CoronaDataLoading) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is CoronaDataErrorOccured) {

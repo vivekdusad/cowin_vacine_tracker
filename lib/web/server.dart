@@ -22,7 +22,6 @@ abstract class Server {
 
 class ServerBase extends Server {
   Future<Response> _getData({String url}) async {
-    print(url);
     var response = await http.get(Uri.parse(url));
     return response;
   }
@@ -41,7 +40,7 @@ class ServerBase extends Server {
       throw CustomException(); //"Server Error"
     }
     final _results = jsonDecode(_response.body);
-    // print(_results["states"]);
+
     List<dynamic> list = _results["states"] as List;
     List<States> centers = list.map((e) {
       return States.fromJson(e);
@@ -65,7 +64,7 @@ class ServerBase extends Server {
       throw CustomException(); //"Server Error"
     }
     final _results = jsonDecode(_response.body);
-    print(_results);
+
     List<dynamic> list = _results["districts"] as List;
     List<Districts> centers = list.map((e) {
       return Districts.fromJson(e);
@@ -103,7 +102,7 @@ class ServerBase extends Server {
       String distId, DateTime date) async {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     final String formatted = formatter.format(date);
-    print(date);
+
     Response _response = await _getData(
         url: sessionsbaseUrl +
             "calendarByDistrict?district_id=$distId&date=$formatted");
@@ -141,7 +140,7 @@ class ServerBase extends Server {
     }
     final _results = jsonDecode(_response.body);
     CoronaData coronaData = CoronaData.fromJson(_results);
-    print(coronaData.country);
+    
     return coronaData;
   }
 
@@ -160,11 +159,11 @@ class ServerBase extends Server {
       throw CustomException(); //"Server Error"
     }
     final _results = jsonDecode(_response.body);
-    // print(_results[0]);
+
     var list = _results as List;
     List<StateCorona> corona =
         list.map((e) => StateCorona.fromJson(e)).toList();
-    print(corona[0].confirmed);
+
     return corona;
   }
 }
