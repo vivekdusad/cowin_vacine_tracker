@@ -9,46 +9,48 @@ import 'package:workmanager/workmanager.dart';
 
 const myTask = "syncWithTheBackEnd";
 
-  
 void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
-      
+  Workmanager().executeTask((task, inputData) async {
     // initialise the plugin of flutterlocalnotifications.
-    FlutterLocalNotificationsPlugin flip = new FlutterLocalNotificationsPlugin();
-      
-    // app_icon needs to be a added as a drawable
-    // resource to the Android head project.
-    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var IOS = new IOSInitializationSettings();
-      
-    // initialise settings for both Android and iOS device.
-    var settings = new InitializationSettings(android: android,iOS: IOS);
-    flip.initialize(settings);
-    _showNotificationWithDefaultSound(flip);
+
+    var list = await ProviderContainer()
+        .read(serverprovider)
+        .getSessionByPincode("110001", DateTime.now());
+    print(list.length);
+    var filter = list
+        .where((element) => element.sessions[0].availableCapacity > 0)
+        .toList();
+    if (filter.isNotEmpty) {
+      FlutterLocalNotificationsPlugin flip =
+          new FlutterLocalNotificationsPlugin();
+      var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+      var IOS = new IOSInitializationSettings();
+      var settings = new InitializationSettings(android: android, iOS: IOS);
+      flip.initialize(settings);
+      _showNotificationWithDefaultSound(
+          flip, filter.first.sessions[0].availableCapacity.toString());
+    }
     return Future.value(true);
   });
 }
-  
-Future _showNotificationWithDefaultSound(flip) async {
-    
+
+Future _showNotificationWithDefaultSound(flip, String centerName) async {
   // Show a notification after every 15 minute with the first
   // appearance happening a minute after invoking the method
   var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      'your channel description',      
+    'your channel id',
+    'your channel name',
+    'your channel description',
   );
   var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    
+
   // initialise channel platform for both Android and iOS device.
   var platformChannelSpecifics = new NotificationDetails(
-      android:androidPlatformChannelSpecifics,
-      iOS:iOSPlatformChannelSpecifics
-  );
-  await flip.show(0, 'Vaccine Finder',
-    'Vaccine Found',
-    platformChannelSpecifics, payload: 'Default_Sound'
-  );
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics);
+  await flip.show(0, 'Vaccine Finder', 'Vaccine Count: $centerName',
+      platformChannelSpecifics,
+      payload: 'Default_Sound');
 }
 
 void main() {
