@@ -1,6 +1,7 @@
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListCoutn extends StatelessWidget {
   final Centers centers;
@@ -79,12 +80,28 @@ class ListCoutn extends StatelessWidget {
                   ),
                 ],
               ),
-              _capacity > 0
-                  ? MaterialButton(
-                      onPressed: () {},
-                      child: Text("Book Now"),
-                    )
-                  : Null,
+              if (_capacity > 0)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.purpleAccent,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: MaterialButton(
+                        onPressed: () async {
+                          await launch("https://www.cowin.gov.in/");
+                        },
+                        child: Text(
+                          "Book Now",
+                          style: GoogleFonts.quicksand(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
             ],
           ),
         ),
