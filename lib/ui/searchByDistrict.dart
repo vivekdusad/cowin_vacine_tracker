@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import '../main.dart';
 
@@ -218,6 +219,7 @@ class _UpperContentState extends State<UpperContent> {
               },
               child: Text("Get"),
             ),
+            LottieBuilder.asset("images/handwash.json"),
           ],
         ),
       ),

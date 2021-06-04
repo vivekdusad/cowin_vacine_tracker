@@ -7,7 +7,7 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Lottie.network("https://assets5.lottiefiles.com/packages/lf20_Z4BhGL.json"),
+      child: LottieBuilder.asset("images/loading.json"),
     );
   }
 }

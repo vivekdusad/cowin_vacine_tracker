@@ -98,8 +98,8 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(
-                    child: Lottie.network(
-                        "https://assets6.lottiefiles.com/packages/lf20_d1bjrsyg.json")),
+                  child: LottieBuilder.asset("images/coviddis.json"),
+                ),
               ],
             ),
           );
@@ -107,8 +107,7 @@ class HomePage extends StatelessWidget {
           return Center(
               child: Column(
             children: [
-              Lottie.network(
-                  "https://assets9.lottiefiles.com/packages/lf20_tnrzlN.json"),
+              LottieBuilder.asset("images/searching.json"),
               Text(
                 "Searching...",
                 style: GoogleFonts.ubuntu(fontSize: 20),
