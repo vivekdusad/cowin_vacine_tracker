@@ -22,6 +22,7 @@ abstract class Server {
 
 class ServerBase extends Server {
   Future<Response> _getData({String url}) async {
+    print(url);
     var response = await http.get(Uri.parse(url));
     return response;
   }
@@ -92,6 +93,9 @@ class ServerBase extends Server {
     }
     final _results = jsonDecode(_response.body);
     var list = _results['centers'] as List;
+    if (list == null) {
+      throw SocketException("Wrong Pincode");
+    }
     List<Centers> centers = list.map((e) {
       return Centers.fromJson(e);
     }).toList();
@@ -140,7 +144,7 @@ class ServerBase extends Server {
     }
     final _results = jsonDecode(_response.body);
     CoronaData coronaData = CoronaData.fromJson(_results);
-    
+
     return coronaData;
   }
 

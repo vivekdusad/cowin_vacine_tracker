@@ -1,6 +1,8 @@
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/listcount.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +27,7 @@ class ByDistrictPage extends ConsumerWidget {
         body: BlocBuilder<PincodeBloc, PincodeState>(
           builder: (context, state) {
             if (state is SessionLoading) {
-              return Center(child: CircularProgressIndicator());
+              return LoadingScreen();
             } else if (state is StateListLoaded) {
               return UpperContent(
                 states: state.states,
@@ -39,7 +41,7 @@ class ByDistrictPage extends ConsumerWidget {
                 ],
               );
             }
-            return Container();
+            return ErrorMessage();
           },
         ),
       ),
@@ -49,7 +51,6 @@ class ByDistrictPage extends ConsumerWidget {
   Widget _lowerContent() {
     return BlocBuilder<PincodeBloc, PincodeState>(
       builder: (context, state) {
-        print(state);
         if (state is SessionResultByDistrict) {
           return state.centers.length == 0
               ? Center(
@@ -76,9 +77,9 @@ class ByDistrictPage extends ConsumerWidget {
                   ),
                 );
         } else if (state is SessionLoading) {
-          return CircularProgressIndicator();
+          return LoadingScreen();
         } else {
-          return Container();
+          return ErrorMessage();
         }
       },
     );
@@ -141,7 +142,7 @@ class _UpperContentState extends State<UpperContent> {
                     districts = await ProviderContainer()
                         .read(serverprovider)
                         .getDistrict(value.stateId);
-                    // print("loaded");
+
                     setState(() {
                       _slectedValue = value;
                     });

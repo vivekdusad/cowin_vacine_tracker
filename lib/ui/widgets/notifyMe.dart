@@ -1,9 +1,10 @@
-import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class NotifyMe extends StatelessWidget {
-  const NotifyMe({Key key}) : super(key: key);
+// ignore: must_be_immutable
+class Notifyme extends StatelessWidget {
+  Notifyme({Key key}) : super(key: key);
+  TextEditingController _pinCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class NotifyMe extends StatelessWidget {
             children: [
               Container(
                 child: TextField(
+                  controller: _pinCodeController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Pincode',
@@ -35,7 +37,16 @@ class NotifyMe extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 color: Colors.amber,
-                onPressed: () {},
+                onPressed: () async {
+                  if (_pinCodeController.text.isNotEmpty) {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setString('pincode', _pinCodeController.text);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("You will be Notified")));
+                    print(prefs.getString('pincode'));
+                  }
+                },
                 child: Text("Turn On Notifications"),
               ),
             ],

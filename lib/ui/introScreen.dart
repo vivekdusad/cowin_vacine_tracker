@@ -1,6 +1,8 @@
 import 'package:cowin_vaccine_tracker/ui/widgets/TabsWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/buttons.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/crousel.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/notifyMe.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/searchText.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +12,6 @@ import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-
-import 'homePage.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -32,15 +32,15 @@ class _IntroState extends State<Intro> {
         onSelectNotification: onNotificationSelected);
   }
 
-  _showNotifications() async {
-    var androidDetails = new AndroidNotificationDetails(
-        "Channel ID", "Vaccine Finder", "Vaccine is available now");
-    var iosDetails = new IOSNotificationDetails();
-    var generalNotificationDetails =
-        new NotificationDetails(android: androidDetails, iOS: iosDetails);
-    await flutterLocalNotificationsPlugin.show(0, "Vaccine Available",
-        "Vaccine is available now in your area", generalNotificationDetails);
-  }
+  // _showNotifications() async {
+  //   var androidDetails = new AndroidNotificationDetails(
+  //       "Channel ID", "Vaccine Finder", "Vaccine is available now");
+  //   var iosDetails = new IOSNotificationDetails();
+  //   var generalNotificationDetails =
+  //       new NotificationDetails(android: androidDetails, iOS: iosDetails);
+  //   await flutterLocalNotificationsPlugin.show(0, "Vaccine Available",
+  //       "Vaccine is available now in your area", generalNotificationDetails);
+  // }
 
   @override
   Widget build(
@@ -54,7 +54,7 @@ class _IntroState extends State<Intro> {
           child: Scaffold(
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                  Get.to(() => NotifyMe());
+                  Get.to(() => Notifyme());
                 },
                 child: Icon(Icons.notifications_active),
               ),
@@ -63,13 +63,10 @@ class _IntroState extends State<Intro> {
               ),
               body: BlocBuilder<DataBloc, DataState>(
                 builder: (context, state) {
-
                   if (state is CoronaDataLoading) {
-                    return Center(child: CircularProgressIndicator());
+                    return LoadingScreen();
                   } else if (state is CoronaDataErrorOccured) {
-                    return Center(
-                      child: Text("Some Error Occured"),
-                    );
+                    return ErrorMessage();
                   } else if (state is CoronaDataLoaded) {
                     return SingleChildScrollView(
                       child: Column(

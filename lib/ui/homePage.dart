@@ -1,5 +1,6 @@
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/listcount.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/temp.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
   HomePage({Key key}) : super(key: key);
   DateTime selectedDate;
   TextEditingController _pinCodeController = TextEditingController();
-  GlobalKey _fomrKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
@@ -43,7 +44,7 @@ class HomePage extends StatelessWidget {
           opacity = 1;
         }
         return Form(
-          key: _fomrKey,
+          key: _formKey,
           child: Column(
             children: [
               _pincodeFeild(),
@@ -55,7 +56,7 @@ class HomePage extends StatelessWidget {
                 splashColor: Colors.amber,
                 color: Colors.blue,
                 onPressed: () {
-                  _getResultes(context);
+                  getResultes(context);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -79,11 +80,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _getResultes(BuildContext context) {
+  getResultes(BuildContext context) {
     FocusScope.of(context).unfocus(); //
-    if (_pinCodeController.text.isNotEmpty) {
+    if (_formKey.currentState.validate()) {
       BlocProvider.of<PincodeBloc>(context)
           .add(SessionRequestedByPin(_pinCodeController.text, DateTime.now()));
+      _formKey.currentState.save();
     }
   }
 
@@ -133,12 +135,9 @@ class HomePage extends StatelessWidget {
               ),
             );
           }
-        } else if (state is SessionErrorOccured) {
-          return Center(child: Text(state.e.toString()));
+        } else {
+          return ErrorMessage();
         }
-        return Container(
-          child: Text(state.toString()),
-        );
       },
     );
   }
@@ -153,6 +152,12 @@ class HomePage extends StatelessWidget {
             autofocus: true,
             focusNode: FocusNode(),
             keyboardType: TextInputType.number,
+            validator: (String value) {
+              if (value.length > 6 && value.length == 0) {
+                return "Invalid";
+              }
+              return null;
+            },
             decoration: InputDecoration(
                 labelText: "PinCode",
                 hintText: "PinCode",

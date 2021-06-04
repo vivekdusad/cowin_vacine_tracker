@@ -1,10 +1,13 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cowin_vaccine_tracker/repos/pincodeRepo.dart';
 import 'package:cowin_vaccine_tracker/ui/introScreen.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/internetConnection.dart';
 import 'package:cowin_vaccine_tracker/web/server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
 const myTask = "syncWithTheBackEnd";
@@ -12,24 +15,28 @@ const myTask = "syncWithTheBackEnd";
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     // initialise the plugin of flutterlocalnotifications.
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var list = await ProviderContainer()
-        .read(serverprovider)
-        .getSessionByPincode("110001", DateTime.now());
-    print(list.length);
-    var filter = list
-        .where((element) => element.sessions[0].availableCapacity > 0)
-        .toList();
-    if (filter.isNotEmpty) {
-      FlutterLocalNotificationsPlugin flip =
-          new FlutterLocalNotificationsPlugin();
-      var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
-      // ignore: non_constant_identifier_names
-      var IOS = new IOSInitializationSettings();
-      var settings = new InitializationSettings(android: android, iOS: IOS);
-      flip.initialize(settings);
-      _showNotificationWithDefaultSound(
-          flip, filter.first.sessions[0].availableCapacity.toString());
+    if (prefs.containsKey('pincode')) {
+      String pincode = prefs.getString('pincode');
+      var list = await ProviderContainer()
+          .read(serverprovider)
+          .getSessionByPincode(pincode, DateTime.now());
+
+      var filter = list
+          .where((element) => element.sessions[0].availableCapacity > 0)
+          .toList();
+      if (filter.isNotEmpty) {
+        FlutterLocalNotificationsPlugin flip =
+            new FlutterLocalNotificationsPlugin();
+        var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+        // ignore: non_constant_identifier_names
+        var Ios = new IOSInitializationSettings();
+        var settings = new InitializationSettings(android: android, iOS: Ios);
+        flip.initialize(settings);
+        _showNotificationWithDefaultSound(
+            flip, filter.first.sessions[0].availableCapacity.toString());
+      }
     }
     return Future.value(true);
   });
@@ -84,5 +91,15 @@ class MyApp extends StatelessWidget {
       ),
       home: Intro(),
     );
+  }
+
+  checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      return Intro();
+    } else if (connectivityResult == ConnectivityResult.none) {
+      return NoInternet();
+    }
   }
 }
