@@ -9,20 +9,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
-
 const myTask = "syncWithTheBackEnd";
 
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     // initialise the plugin of flutterlocalnotifications.
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     if (prefs.containsKey('pincode')) {
       String pincode = prefs.getString('pincode');
       var list = await ProviderContainer()
           .read(serverprovider)
           .getSessionByPincode(pincode, DateTime.now());
-
       var filter = list
           .where((element) => element.sessions[0].availableCapacity > 0)
           .toList();
@@ -56,7 +53,7 @@ Future _showNotificationWithDefaultSound(flip, String centerName) async {
   var platformChannelSpecifics = new NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics);
-  await flip.show(0, 'Vaccine Finder', 'Vaccine Count: $centerName',
+  await flip.show(0, 'Vaccine Found', 'Vaccine Count: $centerName',
       platformChannelSpecifics,
       payload: 'Default_Sound');
 }
