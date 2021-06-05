@@ -149,7 +149,6 @@ class HomePage extends StatelessWidget {
           child: TextFormField(
             textInputAction: TextInputAction.go,
             autofocus: true,
-            focusNode: FocusNode(),
             keyboardType: TextInputType.number,
             validator: (String value) {
               if (value.length > 6 && value.length == 0) {
