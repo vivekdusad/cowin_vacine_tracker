@@ -63,7 +63,7 @@ Future _showNotificationWithDefaultSound(flip, String centerName) async {
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  Workmanager().initialize(callbackDispatcher);
   Workmanager().registerPeriodicTask(
     "2",
     myTask,

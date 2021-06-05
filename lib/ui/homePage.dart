@@ -134,9 +134,9 @@ class HomePage extends StatelessWidget {
               ),
             );
           }
-        } else {
-          return ErrorMessage();
         }
+        return ErrorMessage();
+        
       },
     );
   }
