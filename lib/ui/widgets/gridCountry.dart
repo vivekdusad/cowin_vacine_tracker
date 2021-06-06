@@ -1,6 +1,7 @@
 import 'package:cowin_vaccine_tracker/models/data.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/girdItem.dart';
 import 'package:flutter/material.dart';
+import 'package:number_display/number_display.dart';
 
 class GridIndia extends StatelessWidget {
   const GridIndia({
@@ -10,6 +11,8 @@ class GridIndia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final display = createDisplay();
+    final display2 = createDisplay();
     return Container(
       height: 500,
       child: GridView.count(
@@ -20,25 +23,25 @@ class GridIndia extends StatelessWidget {
             heading: "Recovered",
             color: Colors.green[100],
             textColor: Colors.green,
-            count: coronaData.recovered.toString(),
+            count: display2(coronaData.recovered),
           ),
           GridItem(
             heading: "Active",
             color: Colors.blue[100],
             textColor: Colors.blue,
-            count: coronaData.active.toString(),
+            count: display(coronaData.active),
           ),
           GridItem(
             heading: "Total",
             color: Colors.grey[100],
             textColor: Colors.grey,
-            count: coronaData.cases.toString(),
+            count: display(coronaData.cases),
           ),
           GridItem(
             heading: "Deaths",
             color: Colors.red[100],
             textColor: Colors.red,
-            count: coronaData.deaths.toString(),
+            count: display(coronaData.deaths),
           ),
         ],
       ),
