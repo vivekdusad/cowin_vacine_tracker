@@ -46,6 +46,7 @@ class _IntroState extends State<Intro> {
   Widget build(
     BuildContext context,
   ) {
+    var size = MediaQuery.of(context).size;
     return Consumer(builder: (context, watch, child) {
       DataBloc databloc = DataBloc(server: watch(serverprovider));
       databloc.add(CoronaDataRequested());
@@ -68,18 +69,38 @@ class _IntroState extends State<Intro> {
                   } else if (state is CoronaDataErrorOccured) {
                     return ErrorMessage();
                   } else if (state is CoronaDataLoaded) {
-                    return SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Crousel(),
-                          searchText(),
-                          Buttons(),
-                          Selection(
-                            coronaData: state.coronaData,
+                    return ListView(
+                      children: [
+                        Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 200,
+                              ),
+                              Container(
+                                height: size.height - 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30)),
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
                           ),
-                        ],
-                      ),
+                          height: size.height,
+                          width: size.width,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    "images/covid-bg.png",
+                                  ),
+                                  fit: BoxFit.fill)),
+                        ),
+                        Container(
+                          height: size.height - 200,
+                        )
+                      ],
                     );
                   }
                   return CircularProgressIndicator();
