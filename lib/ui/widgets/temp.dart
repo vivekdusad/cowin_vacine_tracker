@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
 
 // ignore: must_be_immutable
@@ -25,7 +24,7 @@ class _MyScreenPinCodeState extends State<MyScreenPinCode> {
     final dates = <Widget>[];
 
     for (int i = 0; i < 5; i++) {
-      final date = _currentDate.add(Duration(days: i));
+      final date = _currentDate.add(Duration(days: i));      
       dates.add(Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: BlocBuilder<PincodeBloc, PincodeState>(
@@ -52,7 +51,6 @@ class _MyScreenPinCodeState extends State<MyScreenPinCode> {
     );
   }
 }
-
 
 // ignore: must_be_immutable
 class MyScreenDistrict extends StatefulWidget {

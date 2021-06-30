@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cowin_vaccine_tracker/constants/constants.dart';
+import 'package:cowin_vaccine_tracker/models/CoronaCaseCountry.dart';
 import 'package:cowin_vaccine_tracker/models/data.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/models/stateCorna.dart';
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -170,6 +172,24 @@ class ServerBase extends Server {
 
     return corona;
   }
+
+  Future<List<CoronaCaseCountry>> fetchCases() async {
+    String caseURL =
+        '$baseURL?f=json&where=(Confirmed%3E%200)%20OR%20(Deaths%3E0)%20OR%20(Recovered%3E0)&returnGeometry=false&spatialRef=esriSpatialRelIntersects&outFields=*&orderByFields=Country_Region%20asc,Province_State%20asc&resultOffset=0&resultRecordCount=250&cacheHint=false';
+
+    final Response response = await _getData(url: caseURL);
+    final _results = jsonDecode(response.body);
+    var list = _results['features'] as List;
+    List<CoronaCaseCountry> centers = list.map((e) {
+      var t = e["attributes"] as Map<String, dynamic>;      
+      return CoronaCaseCountry.fromMap(t);
+    }).toList();
+    print(centers[0].toString());
+    return centers;
+  }
 }
 
 class CustomException {}
+
+const baseURL =
+    'https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query';

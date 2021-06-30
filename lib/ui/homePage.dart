@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
-      watch(serverprovider).getStateCorona();
+     
       return BlocProvider(
           create: (context) => PincodeBloc(server: watch(serverprovider)),
           child: Scaffold(
@@ -136,7 +136,6 @@ class HomePage extends StatelessWidget {
           }
         }
         return ErrorMessage();
-        
       },
     );
   }

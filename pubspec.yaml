@@ -43,6 +43,8 @@ dependencies:
   url_launcher: ^6.0.6
   workmanager: ^0.4.0
   number_display: ^3.0.0
+  google_maps_flutter: ^2.0.1
+  intl:
 
 dev_dependencies:
   flutter_test:

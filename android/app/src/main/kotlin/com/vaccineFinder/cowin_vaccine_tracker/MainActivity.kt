@@ -1,4 +1,4 @@
-package com.example.cowin_vaccine_tracker
+package com.vaccineFinder.cowin_vaccine_tracker
 
 import io.flutter.embedding.android.FlutterActivity
 
