@@ -6,7 +6,7 @@ import 'package:cowin_vaccine_tracker/models/data.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/models/stateCorna.dart';
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
-import 'package:flutter/services.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';

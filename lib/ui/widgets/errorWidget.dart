@@ -11,7 +11,8 @@ class ErrorMessage extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         //ToDo make all lottie file as assets
-        LottieBuilder.asset("images/noInternet.json"),
+        LottieBuilder.asset("images/noInternet.json",height: 50,
+                    width: 50,),
         Text("Some Error has Occured", style: GoogleFonts.ubuntu(fontSize: 20)),
       ],
     );

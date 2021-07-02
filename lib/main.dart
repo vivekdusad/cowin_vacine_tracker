@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
+
 const myTask = "syncWithTheBackEnd";
 
 void callbackDispatcher() {
@@ -84,6 +85,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         primarySwatch: Colors.blue,
       ),
       home: Intro(),

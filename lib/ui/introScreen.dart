@@ -1,9 +1,11 @@
+import 'package:cowin_vaccine_tracker/ui/statistics.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
 import 'package:cowin_vaccine_tracker/ui/homePage.dart';
@@ -11,7 +13,9 @@ import 'package:cowin_vaccine_tracker/ui/maps.dart';
 import 'package:cowin_vaccine_tracker/ui/searchByDistrict.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
-import 'package:cowin_vaccine_tracker/ui/widgets/notifyMe.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/piechartsample.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/totalcoronacases.dart';
+import 'package:intl/intl.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -36,7 +40,9 @@ class _IntroState extends State<Intro> {
   Widget build(
     BuildContext context,
   ) {
+    
     var size = MediaQuery.of(context).size;
+    var f = NumberFormat.compact(locale: "en_US");
     return Consumer(builder: (context, watch, child) {
       watch(serverprovider).fetchCases();
       DataBloc databloc = DataBloc(server: watch(serverprovider));
@@ -44,19 +50,6 @@ class _IntroState extends State<Intro> {
       return BlocProvider(
         create: (context) => databloc,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text("Vaccine Finder"),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Get.to(() => Notifyme());
-                  },
-                  icon: Image.asset(
-                    "images/notificaton.png",
-                    color: Colors.white,
-                  ))
-            ],
-          ),
           body: BlocBuilder<DataBloc, DataState>(
             builder: (context, state) {
               if (state is CoronaDataLoading) {
@@ -66,12 +59,10 @@ class _IntroState extends State<Intro> {
               } else if (state is CoronaDataLoaded) {
                 return ListView(children: [
                   Container(
-                      height: size.height,
-                      width: size.width,
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage(
-                                "images/covid-bg.png",
+                                "images/bg.png",
                               ),
                               fit: BoxFit.fill)),
                       child: Column(
@@ -80,7 +71,6 @@ class _IntroState extends State<Intro> {
                             coronaCases: state.coronaData.active,
                           ),
                           Container(
-                            height: size.height - 200,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(30),
@@ -90,7 +80,6 @@ class _IntroState extends State<Intro> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 40),
                             child: Column(children: [
-                              mainCard(context),
                               SizedBox(height: 40),
                               Row(
                                   mainAxisAlignment:
@@ -117,13 +106,57 @@ class _IntroState extends State<Intro> {
                                     }),
                                     regularCard(
                                         'images/stats.png', 'Statistics', () {
-                                      showSnackbar(context, "comming soon");
+                                      Get.to(StatisticsPage());
                                     }),
-                                  ])
+                                  ]),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              PieChartSample1(
+                                value: [
+                                  state.coronaData.recoveredPerOneMillion + 0.0,
+                                  state.coronaData.deathsPerOneMillion + 0.0,
+                                  state.coronaData.activePerOneMillion + 0.0,
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 8),
+                                child: Card(
+                                  elevation: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(30.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        CoronaColumn(
+                                          colors: Colors.green,
+                                          data: f.format(
+                                              state.coronaData.recovered),
+                                          string: "Recovered",
+                                        ),
+                                        CoronaColumn(
+                                          colors: Colors.blue,
+                                          data:
+                                              f.format(state.coronaData.active),
+                                          string: "Active",
+                                        ),
+                                        CoronaColumn(
+                                          colors: Colors.red,
+                                          data:
+                                              f.format(state.coronaData.deaths),
+                                          string: "Deaths",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
                             ]),
                           )
                         ],
-                      ))
+                      )),
                 ]);
               }
               return CircularProgressIndicator();
@@ -181,6 +214,69 @@ class _IntroState extends State<Intro> {
   Future onNotificationSelected(String payload) {}
 }
 
+class CoronaColumn extends StatelessWidget {
+  final String data;
+  final String string;
+  final Color colors;
+  const CoronaColumn({
+    Key key,
+    @required this.data,
+    @required this.string,
+    @required this.colors,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          string,
+          style: TextStyle(
+            fontSize: 20,
+            color: colors,
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          data.toString(),
+          style: TextStyle(
+            fontSize: 22,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class Pie extends StatelessWidget {
+  var state;
+  Pie({
+    Key key,
+    this.state,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      width: 200,
+      child: PieChart(PieChartData(sections: [
+        PieChartSectionData(
+          value: state.coronaData.recovered + 0.0,
+        ),
+        PieChartSectionData(
+          value: state.coronaData.active + 0.0,
+        ),
+        PieChartSectionData(
+          value: state.coronaData.recovered + 0.0,
+        )
+      ])),
+    );
+  }
+}
+
 void showSnackbar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
 }
@@ -214,44 +310,4 @@ SizedBox regularCard(String iconName, String cardLabel, Function onTap) {
               fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black))
     ]),
   );
-}
-
-class TotalCoronaCases extends StatelessWidget {
-  final int coronaCases;
-  const TotalCoronaCases({
-    Key key,
-    @required this.coronaCases,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Container(
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(right: 30),
-            child: Column(
-              children: [
-                Text(coronaCases.toString(),
-                    style: TextStyle(
-                        fontSize: 55,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white)),
-                Text('Total Cases',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white)),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
 }
