@@ -18,6 +18,22 @@ class _MapsPageState extends State<MapsPage>
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    if (cases == null) {
+      return;
+    }
+    setState(() {
+      _markers.clear();
+      cases.forEach((element) {
+        cases.forEach((element) {          
+          final title = '${element.Country_Region}';
+          final marker = Marker(
+            markerId: MarkerId(title),
+            position: LatLng(element.Lat, element.Long_),            
+          );
+          _markers[title] = marker;
+        });
+      });
+    });
   }
 
   final Map<String, Marker> _markers = {};
@@ -38,15 +54,14 @@ class _MapsPageState extends State<MapsPage>
             return Center(
               child: Text(snapshot.error.toString()),
             );
-          } else {
-            this.cases = snapshot.data;
-
-            return GoogleMap(
+          } else {            
+            return GoogleMap(              
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: const LatLng(30.5833, 114.26667),
                 zoom: 5,
               ),
+              mapType: MapType.normal,
               markers: _markers.values.toSet(),
             );
           }

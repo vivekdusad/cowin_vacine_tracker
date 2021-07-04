@@ -12,7 +12,7 @@ class ListCoutn extends StatelessWidget {
     final int _capacity = centers.sessions[0].availableCapacity;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(

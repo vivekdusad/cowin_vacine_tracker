@@ -1,14 +1,14 @@
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/bloc/pincode_bloc.dart';
-import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
-import 'package:cowin_vaccine_tracker/ui/widgets/listcount.dart';
+import 'package:cowin_vaccine_tracker/ui/pincodeResult.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/radiochips.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
+
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -43,12 +43,7 @@ class _HomePageState extends State<HomePage> {
               appBar: AppBar(
                 title: Text("Search By Pincode"),
               ),
-              body: Column(
-                children: [
-                  _upperContent(context),
-                  _lowerContent(context),
-                ],
-              )));
+              body: _upperContent(context)));
     });
   }
 
@@ -69,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(10.0),
+                    padding: const EdgeInsets.only(left: 20),
                     child: Text("Age Group",
                         style: GoogleFonts.lato(
                           fontSize: 16,
@@ -77,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                         )),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       RadioChips(
                         isSelected: isEighteenSelected,
@@ -107,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.only(left: 20),
                     child: Text("Dose",
                         style: GoogleFonts.lato(
                           fontSize: 16,
@@ -115,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                         )),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       RadioChips(
                         isSelected: isDose1Selected,
@@ -139,11 +134,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   )
-                ],
-              ),
-              Column(
-                children: [
-                  Text("Dose"),
                 ],
               ),
               MaterialButton(
@@ -205,69 +195,14 @@ class _HomePageState extends State<HomePage> {
   getResultes(BuildContext context) {
     FocusScope.of(context).unfocus(); //
     if (_formKey.currentState.validate()) {
-      BlocProvider.of<PincodeBloc>(context)
-          .add(SessionRequestedByPin(_pinCodeController.text, DateTime.now()));
-      _formKey.currentState.save();
-    }
-  }
-
-  _lowerContent(BuildContext context) {
-    return BlocBuilder<PincodeBloc, PincodeState>(
-      builder: (context, state) {
-        if (state is PincodeInitial) {
-          return Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: LottieBuilder.asset(
-                    "images/coviddis.json",
-                    height: 50,
-                    width: 50,
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else if (state is SessionLoading) {
-          return Center(
-              child: Column(
-            children: [
-              LottieBuilder.asset(
-                "images/searching.json",
-                height: 50,
-                width: 50,
-              ),
-              Text(
-                "Searching...",
-                style: GoogleFonts.ubuntu(fontSize: 20),
-              ),
-            ],
+      Get.to(() => PincodeResultsPage(
+            pincode: _pinCodeController.text,
+            isEighteenSelected: isEighteenSelected,
+            isDose1Selected: isDose1Selected,
+            isDose2Selected: isDose2Selected,
+            isfourtyFiveSelected: isfortyFiveSelected,
           ));
-        } else if (state is SessionResultByPinCode) {
-          if (state.centers.length > 0) {
-            return Expanded(
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return ListCoutn(
-                    centers: state.centers[index],
-                  );
-                },
-                itemCount: state.centers.length,
-              ),
-            );
-          } else {
-            return Expanded(
-              child: Center(
-                child: Text("No Slots available"),
-              ),
-            );
-          }
-        }
-        return ErrorMessage();
-      },
-    );
+    }
   }
 
   _pincodeFeild() {
@@ -293,44 +228,6 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       },
-    );
-  }
-}
-
-class RadioChips extends StatefulWidget {
-  bool isSelected;
-  String text;
-  Function onTap;
-  RadioChips({
-    this.isSelected,
-    this.text,
-    this.onTap,
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _RadioChipsState createState() => _RadioChipsState();
-}
-
-class _RadioChipsState extends State<RadioChips> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Radio(
-            value: widget.isSelected,
-            groupValue: widget.isSelected == true ? true : null,
-            onChanged: (value) {
-              setState(() {
-                widget.isSelected = value;
-                widget.onTap();
-              });
-            }),
-        SizedBox(
-          width: 1,
-        ),
-        Text(widget.text),
-      ],
     );
   }
 }

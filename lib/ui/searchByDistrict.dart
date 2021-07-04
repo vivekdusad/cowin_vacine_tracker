@@ -7,6 +7,7 @@ import 'package:cowin_vaccine_tracker/ui/widgets/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -107,100 +108,117 @@ class _UpperContentState extends State<UpperContent> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Color(0xFFdeedf0),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<States>(
-                  focusColor: Colors.white,
-
-                  value: _slectedValue,
-                  //elevation: 5,
-                  style: TextStyle(color: Colors.white),
-                  iconEnabledColor: Colors.black,
-                  items: widget.states.map<DropdownMenuItem<States>>((value) {
-                    return DropdownMenuItem<States>(
-                      value: value,
-                      child: Text(
-                        value.stateName,
-                        style: TextStyle(color: Colors.black, fontSize: 20),
-                      ),
-                    );
-                  }).toList(),
-                  hint: Text(
-                    "Please choose a State",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Select State",
+                    style: GoogleFonts.ubuntu(
+                        fontSize: 16, fontWeight: FontWeight.bold)),
+                Container(
+                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Color(0xFFdeedf0),
                   ),
-                  onChanged: (States value) async {
-                    districts.clear();
-                    _selectedDistrict = null;
-                    districts = await ProviderContainer()
-                        .read(serverprovider)
-                        .getDistrict(value.stateId);
-
-                    setState(() {
-                      _slectedValue = value;
-                    });
-                  },
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Color(0xFFdeedf0),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                child: DropdownButtonHideUnderline(
-                  child: new Theme(
-                    data: Theme.of(context).copyWith(
-                      canvasColor: Colors.white,
-                    ),
-                    child: DropdownButton<Districts>(
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<States>(
                       focusColor: Colors.white,
-                      value: _selectedDistrict,
+                      value: _slectedValue,
                       //elevation: 5,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.black,
                       items:
-                          districts.map<DropdownMenuItem<Districts>>((value) {
-                        return DropdownMenuItem<Districts>(
+                          widget.states.map<DropdownMenuItem<States>>((value) {
+                        return DropdownMenuItem<States>(
                           value: value,
                           child: Text(
-                            value.districtName,
+                            value.stateName,
                             style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         );
                       }).toList(),
                       hint: Text(
-                        "Please choose a District",
+                        "Please choose a State",
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.w500),
                       ),
-                      onChanged: (Districts value) {
+                      onChanged: (States value) async {
+                        districts.clear();
+                        _selectedDistrict = null;
+                        districts = await ProviderContainer()
+                            .read(serverprovider)
+                            .getDistrict(value.stateId);
+
                         setState(() {
-                          _selectedDistrict = value;
+                          _slectedValue = value;
                         });
                       },
                     ),
                   ),
                 ),
-              ),
+              ],
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Select District",
+                    style: GoogleFonts.ubuntu(
+                        fontSize: 16, fontWeight: FontWeight.bold)),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Color(0xFFdeedf0),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    child: DropdownButtonHideUnderline(
+                      child: new Theme(
+                        data: Theme.of(context).copyWith(
+                          canvasColor: Colors.white,
+                        ),
+                        child: DropdownButton<Districts>(
+                          focusColor: Colors.white,
+                          value: _selectedDistrict,
+                          //elevation: 5,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          iconEnabledColor: Colors.black,
+                          items: districts
+                              .map<DropdownMenuItem<Districts>>((value) {
+                            return DropdownMenuItem<Districts>(
+                              value: value,
+                              child: Text(
+                                value.districtName,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20),
+                              ),
+                            );
+                          }).toList(),
+                          hint: Text(
+                            "Please choose a District",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          onChanged: (Districts value) {
+                            setState(() {
+                              _selectedDistrict = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 30,
