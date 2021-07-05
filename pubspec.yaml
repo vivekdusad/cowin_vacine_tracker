@@ -37,6 +37,7 @@ dependencies:
   get: ^4.1.4
   google_fonts: ^2.1.0
   http: ^0.13.3
+  flutter_neumorphic:
   lottie: ^1.0.1
   provider: ^5.0.0
   shared_preferences: ^2.0.6

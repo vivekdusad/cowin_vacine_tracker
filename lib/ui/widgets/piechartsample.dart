@@ -14,7 +14,7 @@ class PieChartSample1 extends StatefulWidget {
 
 class _PieChartSample1State extends State<PieChartSample1> {
   int touchedIndex = -1;
-  int min_height = 150;
+  int min_height = 120;
   double a, b, c, sum, per_a, per_b, per_c;
   @override
   void initState() {
@@ -71,33 +71,30 @@ class _PieChartSample1State extends State<PieChartSample1> {
               height: 18,
             ),
             Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: PieChart(
-                  PieChartData(
-                      pieTouchData:
-                          PieTouchData(touchCallback: (pieTouchResponse) {
-                        setState(() {
-                          final desiredTouch = pieTouchResponse.touchInput
-                                  is! PointerExitEvent &&
-                              pieTouchResponse.touchInput is! PointerUpEvent;
-                          if (desiredTouch &&
-                              pieTouchResponse.touchedSection != null) {
-                            touchedIndex = pieTouchResponse
-                                .touchedSection.touchedSectionIndex;
-                          } else {
-                            touchedIndex = -1;
-                          }
-                        });
-                      }),
-                      startDegreeOffset: 180,
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 1,
-                      centerSpaceRadius: 0,
-                      sections: showingSections()),
-                ),
+              child: PieChart(
+                PieChartData(
+                    pieTouchData:
+                        PieTouchData(touchCallback: (pieTouchResponse) {
+                      setState(() {
+                        final desiredTouch = pieTouchResponse.touchInput
+                                is! PointerExitEvent &&
+                            pieTouchResponse.touchInput is! PointerUpEvent;
+                        if (desiredTouch &&
+                            pieTouchResponse.touchedSection != null) {
+                          touchedIndex = pieTouchResponse
+                              .touchedSection.touchedSectionIndex;
+                        } else {
+                          touchedIndex = -1;
+                        }
+                      });
+                    }),
+                    startDegreeOffset: 180,
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 1,
+                    centerSpaceRadius: 0,
+                    sections: showingSections()),
               ),
             ),
           ],
