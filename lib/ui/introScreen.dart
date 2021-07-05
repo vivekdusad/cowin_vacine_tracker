@@ -3,6 +3,7 @@ import 'package:cowin_vaccine_tracker/ui/statistics.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/coronaColumn.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/home_top.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/intro_gradient.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,6 @@ import 'package:cowin_vaccine_tracker/ui/maps.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/piechartsample.dart';
-import 'package:cowin_vaccine_tracker/ui/widgets/totalcoronacases.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -63,119 +63,171 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
                       ),
                       HomeTopWidget(),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: NeumorphicButton(
-                                onPressed: () {
-                                  changeColor(CustomColors.primaryBlue);
-                                },
-                                child: Center(
-                                    child: Text('Today',
-                                        style: GoogleFonts.roboto(
-                                          color: cardBackgroundColor ==
-                                                  Colors.white
-                                              ? CustomColors.primaryBlue
-                                              : Colors.white,
-                                        ))),
-                                style: NeumorphicStyle(
-                                  color: cardBackgroundColor,
-                                ),
-                              ),
+                        padding:EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        child: Card(
+                          shape:RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(bottomLeft:
+                            Radius.circular(10),
+                                topLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)
+                                ,topRight: Radius.circular(10)
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: NeumorphicButton(
-                                onPressed: () {
-                                  changeColor(Colors.white);
-                                },
-                                child: Center(
-                                    child: Text('Tommorow',
-                                        style: GoogleFonts.roboto(
-                                            color: cardBackgroundColor))),
-                                style: NeumorphicStyle(
-                                  color: cardBackgroundColor == Colors.white
-                                      ? CustomColors.primaryBlue
-                                      : Colors.white,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      GraphSection(data: state.graphData,),                      
-                      Container(
-                        child: Column(children: [                          
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                regularCard('images/vaccine.png',
-                                    'Search \n Vaccine by Pincode', () {
-                                  Get.to(HomePage());
-                                }),
-                              ]),
-                          SizedBox(height: 20),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                regularCard('images/map.png', 'Map', () {
-                                  Get.to(() => MapsPage());
-                                }),
-                                regularCard('images/stats.png', 'Statistics',
-                                    () {
-                                  Get.to(StatisticsPage());
-                                }),
-                              ]),
-                          SizedBox(
-                            height: 30,
                           ),
-                          PieChartSample1(
-                            value: [
-                              state.coronaData.recoveredPerOneMillion + 0.0,
-                              state.coronaData.deathsPerOneMillion + 0.0,
-                              state.coronaData.activePerOneMillion + 0.0,
+                          elevation: 10,
+                          color: Colors.white,
+
+                          //padding:EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: NeumorphicButton(
+                                    onPressed: () {
+                                      changeColor(CustomColors.primaryBlue);
+                                    },
+                                    child: Center(
+                                        child: Text('Today',
+                                            style: GoogleFonts.roboto(
+                                              color: cardBackgroundColor ==
+                                                      Colors.white
+                                                  ? CustomColors.primaryBlue
+                                                  : Colors.white,
+                                            ))),
+                                    style: NeumorphicStyle(
+                                      depth: 0,
+                                      color: cardBackgroundColor
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: NeumorphicButton(
+                                    onPressed: () {
+                                      changeColor(Colors.white);
+                                    },
+                                    child: Center(
+                                        child: Text('Tommorow',
+                                            style: GoogleFonts.roboto(
+                                                color: cardBackgroundColor))),
+                                    style: NeumorphicStyle(
+                                      depth: 0,
+                                      color: cardBackgroundColor == Colors.white
+                                          ? CustomColors.primaryBlue
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 8),
-                            child: Card(
-                              elevation: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.all(30.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    CoronaColumn(
-                                      colors: Colors.green,
-                                      data:
-                                          f.format(state.coronaData.recovered),
-                                      string: "Recovered",
-                                    ),
-                                    CoronaColumn(
-                                      colors: Colors.blue,
-                                      data: f.format(state.coronaData.active),
-                                      string: "Active",
-                                    ),
-                                    CoronaColumn(
-                                      colors: Colors.red,
-                                      data: f.format(state.coronaData.deaths),
-                                      string: "Deaths",
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GraphSection(data: state.graphData,),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('58%',style: TextStyle(color: Colors.pink,fontSize:20 ),),
+                              Text('INFECTION RISK',style:TextStyle(color: Colors.grey,fontSize: 12))
+                            ],
+                          ),
+                          SizedBox(width: 30,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text('24 June',),
+                              Text('LIVE TRACKING',style:TextStyle(color: Colors.grey,fontSize: 12))
+                            ],
                           )
-                        ]),
-                      )
+                        ],),
+                      Divider(thickness: 2,),
+                      // TabBar(
+                      //   controller: TabController(length: 2, vsync: this),
+                      //   tabs: [
+                      //   Text('Statistics',style:TextStyle(color: CustomColors.primaryBlue,fontSize: 15,fontWeight: FontWeight.w700)),
+                      //   Text('Schedules',style:TextStyle(color: CustomColors.primaryBlue,fontSize: 15,fontWeight: FontWeight.w700))
+                      // ],),
+                      // Divider(thickness: 2,)
+                      // Container(
+                      //   child: Column(children: [
+                      //     Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           regularCard('images/vaccine.png',
+                      //               'Search \n Vaccine by Pincode', () {
+                      //             Get.to(HomePage());
+                      //           }),
+                      //         ]),
+                      //     SizedBox(height: 20),
+                      //     Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           regularCard('images/map.png', 'Map', () {
+                      //             Get.to(() => MapsPage());
+                      //           }),
+                      //           regularCard('images/stats.png', 'Statistics',
+                      //               () {
+                      //             Get.to(StatisticsPage());
+                      //           }),
+                      //         ]),
+                      //     SizedBox(
+                      //       height: 30,
+                      //     ),
+                      //     PieChartSample1(
+                      //       value: [
+                      //         state.coronaData.recoveredPerOneMillion + 0.0,
+                      //         state.coronaData.deathsPerOneMillion + 0.0,
+                      //         state.coronaData.activePerOneMillion + 0.0,
+                      //       ],
+                      //     ),
+                      //     Padding(
+                      //       padding: const EdgeInsets.symmetric(
+                      //           vertical: 10, horizontal: 8),
+                      //       child: Card(
+                      //         elevation: 3,
+                      //         child: Padding(
+                      //           padding: const EdgeInsets.all(30.0),
+                      //           child: Row(
+                      //             mainAxisAlignment:
+                      //                 MainAxisAlignment.spaceAround,
+                      //             children: [
+                      //               CoronaColumn(
+                      //                 colors: Colors.green,
+                      //                 data:
+                      //                     f.format(state.coronaData.recovered),
+                      //                 string: "Recovered",
+                      //               ),
+                      //               CoronaColumn(
+                      //                 colors: Colors.blue,
+                      //                 data: f.format(state.coronaData.active),
+                      //                 string: "Active",
+                      //               ),
+                      //               CoronaColumn(
+                      //                 colors: Colors.red,
+                      //                 data: f.format(state.coronaData.deaths),
+                      //                 string: "Deaths",
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     )
+                      //   ]),
+                      // ),
+
                     ],
                   ),
                 );
@@ -187,8 +239,6 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
       );
     });
   }
-
-  // ignore: missing_return
   
 }
 SizedBox regularCard(String iconName, String cardLabel, Function onTap) {

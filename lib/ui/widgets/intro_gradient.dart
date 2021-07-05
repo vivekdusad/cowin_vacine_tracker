@@ -1,3 +1,4 @@
+import 'package:cowin_vaccine_tracker/constants/constants.dart';
 import 'package:cowin_vaccine_tracker/models/totaldata.dart';
 
 import 'package:fl_chart/fl_chart.dart';
@@ -7,8 +8,8 @@ import 'package:intl/intl.dart';
 // ignore: must_be_immutable
 class GraphSection extends StatelessWidget {
   List<Color> gradientColors = [
-    const Color(0xff23b6e6),
-    const Color(0xff02d39a),
+    CustomColors.primaryBlue,
+    CustomColors.secondryBlue,
   ];
   List<TotalDataInternal> data;
   GraphSection({Key key, this.data}) : super(key: key);
@@ -28,7 +29,9 @@ class GraphSection extends StatelessWidget {
 
   String horizontalLines(double values) {
     if (values % 100 == 0) {
-      return DateFormat('MMM').format(DateTime(0, DateTime(2020,01,30).add(Duration(days: values.toInt())).month));
+     // var  year=DateTime(0, DateTime(2020,01,30).add(Duration(days: values.toInt())).year);
+      return DateFormat('MMM').format(DateTime(0, DateTime(2020,01,30).add(Duration(days: values.toInt())).month)) +
+         '-'+ DateFormat('yy').format(DateTime(2020,01,30).add(Duration(days: values.toInt())));
     }
     return null;
   }
@@ -52,40 +55,39 @@ class GraphSection extends StatelessWidget {
         show: true,
         bottomTitles: SideTitles(
           showTitles: true,
-          reservedSize: 22,
+          reservedSize: 15,
           getTextStyles: (value) => const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+              color: Colors.black,
+              letterSpacing: 0.6,
+              fontSize: 12),
           getTitles: horizontalLines,
           margin: 8,
         ),
         leftTitles: SideTitles(
           showTitles: true,
           getTextStyles: (value) => const TextStyle(
-            color: Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
+            color: Colors.black,
+            fontSize: 12,
           ),
           getTitles: verticalLines,
-          reservedSize: 28,
+          reservedSize: 25,
           margin: 12,
         ),
       ),
       lineBarsData: [
         LineChartBarData(
+
           spots: giveList(),
           isCurved: true,
-          colors: gradientColors,
-          barWidth: 2,
-          isStrokeCapRound: true,
+          colors: [CustomColors.primaryBlue],
+          barWidth:1.2,
+          isStrokeCapRound: false,
           dotData: FlDotData(
             show: false,
           ),
           belowBarData: BarAreaData(
-            show: false,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            show: true,
+            colors:gradientColors
           ),
         ),
       ],
