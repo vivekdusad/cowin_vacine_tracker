@@ -44,7 +44,6 @@ List<String> states = [
   "Lakshadweep",
   "Puducherry",
 ];
-
 class CustomColors {
   static final Color primaryBlue = Color(0xff3F4897);
   static final Color primaryRed = Color(0xff877B96);

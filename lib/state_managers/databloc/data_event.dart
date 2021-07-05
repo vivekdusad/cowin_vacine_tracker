@@ -15,3 +15,5 @@ class CoronaDataRequestedByState extends DataEvent {
   CoronaDataRequestedByState({this.coronaState});
   
 }
+
+

@@ -21,6 +21,7 @@ abstract class Server {
   Future<List<Districts>> getDistrict(int stateId);
   Future<CoronaData> getCoronaData();
   Future<List<StateCorona>> getStateCorona();
+  Future<List<TotalDataInternal>> fetchTotalData();
 }
 
 class ServerBase extends Server {
@@ -206,8 +207,8 @@ class ServerBase extends Server {
     var list = _results['rows'] as List;
     List<TotalDataInternal> centers = list.map((e) {
       return TotalDataInternal.fromJson(e);
-    }).toList();    
-    return centers;
+    }).toList();
+    return centers.where((element) => element.key[1] == "total_confirmed_cases").toList();
   }
 }
 

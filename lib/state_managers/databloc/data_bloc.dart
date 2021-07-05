@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cowin_vaccine_tracker/models/data.dart';
+import 'package:cowin_vaccine_tracker/models/totaldata.dart';
 import 'package:cowin_vaccine_tracker/web/server.dart';
 import 'package:equatable/equatable.dart';
 
@@ -20,7 +21,8 @@ class DataBloc extends Bloc<DataEvent, DataState> {
       yield CoronaDataLoading();
       try {
         CoronaData coronaData = await server.getCoronaData();
-        yield CoronaDataLoaded(coronaData);
+        List<TotalDataInternal> graphData = await server.fetchTotalData();
+        yield CoronaDataLoaded(coronaData,graphData);
       } on Exception catch (e) {
         yield CoronaDataErrorOccured(e);
       }

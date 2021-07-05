@@ -1,6 +1,6 @@
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/bloc/state_bloc.dart';
-import 'package:cowin_vaccine_tracker/ui/introScreen.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/coronaColumn.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/gridStates.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/piechartsample.dart';
 import 'package:flutter/material.dart';
