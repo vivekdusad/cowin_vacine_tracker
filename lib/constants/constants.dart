@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 String sessionsbaseUrl =
     "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/";
 String locationbaseUrl = "https://cdn-api.co-vin.in/api/v2/admin/location/";
@@ -42,3 +44,13 @@ List<String> states = [
   "Lakshadweep",
   "Puducherry",
 ];
+
+class CustomColors {
+  static final Color primaryBlue = Color(0xff3F4897);
+  static final Color primaryRed = Color(0xff877B96);
+  static final Color primaryGrey = Color(0xff585B6F);
+  static final Color primaryPink = Color(0xffDAB7B6);
+  static final Color secondryBlue = Color(0xffB0C8DF);
+  static final Color secondryGrey = Color(0xffDBDEEB);
+  static final Color primaryBlack = Color(0xff9D9DAB);
+}

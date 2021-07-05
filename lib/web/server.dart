@@ -6,6 +6,7 @@ import 'package:cowin_vaccine_tracker/models/data.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/models/stateCorna.dart';
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
+import 'package:cowin_vaccine_tracker/models/totaldata.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -181,10 +182,31 @@ class ServerBase extends Server {
     final _results = jsonDecode(response.body);
     var list = _results['features'] as List;
     List<CoronaCaseCountry> centers = list.map((e) {
-      var t = e["attributes"] as Map<String, dynamic>;      
+      var t = e["attributes"] as Map<String, dynamic>;
       return CoronaCaseCountry.fromMap(t);
     }).toList();
     print(centers[0].toString());
+    return centers;
+  }
+
+  Future<List<TotalDataInternal>> fetchTotalData() async {
+    Response _response = await _getData(url: totaldataUrl);
+    try {
+      if (_response.statusCode == 500) {
+        throw SocketException("internet");
+      }
+    } on SocketException {
+      throw CustomException(); //"Internet error"
+    } on FormatException {
+      throw CustomException(); //"Try Again Later"
+    } on HttpException {
+      throw CustomException(); //"Server Error"
+    }
+    final _results = jsonDecode(_response.body);
+    var list = _results['rows'] as List;
+    List<TotalDataInternal> centers = list.map((e) {
+      return TotalDataInternal.fromJson(e);
+    }).toList();    
     return centers;
   }
 }
@@ -193,3 +215,6 @@ class CustomException {}
 
 const baseURL =
     'https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/1/query';
+
+const totaldataUrl =
+    "https://raw.githubusercontent.com/datameet/covid19/master/data/all_totals.json";
