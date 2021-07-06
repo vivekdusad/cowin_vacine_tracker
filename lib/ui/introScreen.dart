@@ -14,6 +14,7 @@ import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:neumorphic_container/neumorphic_container.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -295,8 +296,10 @@ Widget bottomBar(context,Animation animation){
 Widget rotatedSquare(){
   return RotationTransition(
     turns: new AlwaysStoppedAnimation(45 / 360),
-    child: Card(
-      shape:RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+    child: NeumorphicContainer(
+      borderRadius: 10,borderThickness: 3,spread: 3,
+      primaryColor: CustomColors.secondryBlue,
+      //shape:RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
       child: Container(
         height: 35.0,
         width: 35.0,
