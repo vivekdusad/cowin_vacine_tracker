@@ -45,10 +45,10 @@ List<String> states = [
   "Puducherry",
 ];
 class CustomColors {
-  static final Color primaryBlue = Color(0xff3F4897);
+  static final Color primaryBlue = Color(0xff4F5FC9);
   static final Color primaryRed = Color(0xff877B96);
-  static final Color primaryGrey = Color(0xff585B6F);
-  static final Color primaryPink = Color(0xffDAB7B6);
+  static final Color primaryGrey = Color(0xffEBF2FB);
+  static final Color primaryPink = Color(0xffEB689F);
   static final Color secondryBlue = Color(0xffB0C8DF);
   static final Color secondryGrey = Color(0xffDBDEEB);
   static final Color primaryBlack = Color(0xff9D9DAB);
