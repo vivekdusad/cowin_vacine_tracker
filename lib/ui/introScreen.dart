@@ -1,24 +1,19 @@
 import 'package:cowin_vaccine_tracker/constants/constants.dart';
-import 'package:cowin_vaccine_tracker/ui/statistics.dart';
-import 'package:cowin_vaccine_tracker/ui/widgets/coronaColumn.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/ClipPathClass.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/ClipPathClass2.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/home_top.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/intro_gradient.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
-import 'package:cowin_vaccine_tracker/ui/homePage.dart';
-import 'package:cowin_vaccine_tracker/ui/maps.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
-import 'package:cowin_vaccine_tracker/ui/widgets/piechartsample.dart';
-import 'package:cowin_vaccine_tracker/ui/widgets/totalcoronacases.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -26,10 +21,22 @@ class Intro extends StatefulWidget {
 }
 
 class _IntroState extends State<Intro> with TickerProviderStateMixin {
-  
+  Animation<double>animation;
+  Tween<double> float=Tween(begin:0,end:3);
+  AnimationController controller;
   @override
   void initState() {
-    super.initState();    
+    super.initState();
+    controller=AnimationController(vsync:this,duration:Duration(milliseconds: 1000));
+    animation=controller.drive(float);
+    controller.addListener(() {
+      if(controller.value==1.0)
+        controller.reverse();
+      else if(controller.value==0.0)
+        controller.forward();
+    });
+    controller.forward();
+
   }
   Color cardBackgroundColor = Colors.white;
   void changeColor(Color changeToColor) {
@@ -40,13 +47,14 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);    
-    var f = NumberFormat.compact(locale: "en_US");
+    //var f = NumberFormat.compact(locale: "en_US");
     return Consumer(builder: (context, watch, child) {
       DataBloc databloc = DataBloc(server: watch(serverprovider));
       databloc.add(CoronaDataRequested());
       return BlocProvider(
         create: (context) => databloc,
         child: Scaffold(
+          backgroundColor: CustomColors.secondryBlue,
           body: BlocBuilder<DataBloc, DataState>(
             builder: (context, state) {
               if (state is CoronaDataLoading) {
@@ -54,141 +62,141 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
               } else if (state is CoronaDataErrorOccured) {
                 return ErrorMessage();
               } else if (state is CoronaDataLoaded) {
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 15,
-                      ),
-                      HomeTopWidget(),
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: NeumorphicButton(
-                                onPressed: () {
-                                  changeColor(CustomColors.primaryBlue);
-                                },
-                                child: Center(
-                                    child: Text('Today',
-                                        style: GoogleFonts.roboto(
-                                          color: cardBackgroundColor ==
-                                                  Colors.white
-                                              ? CustomColors.primaryBlue
-                                              : Colors.white,
-                                        ))),
-                                style: NeumorphicStyle(
-                                  color: cardBackgroundColor,
+                return Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      //mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: 468,
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+
+                              SizedBox(
+                                height: 15,
+                              ),
+                              HomeTopWidget(),
+                              Padding(
+                                padding:EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                child: Card(
+                                  shape:RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(bottomLeft:
+                                    Radius.circular(10),
+                                        topLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10)
+                                        ,topRight: Radius.circular(10)
+                                    ),
+                                  ),
+                                  elevation: 10,
+                                  color: Colors.white,
+
+                                  //padding:EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: NeumorphicButton(
+                                            onPressed: () {
+                                              changeColor(CustomColors.primaryBlue);
+                                            },
+                                            child: Center(
+                                                child: Text('Today',
+                                                    style: GoogleFonts.roboto(
+                                                      color: cardBackgroundColor ==
+                                                              Colors.white
+                                                          ? CustomColors.primaryBlue
+                                                          : Colors.white,
+                                                    ))),
+                                            style: NeumorphicStyle(
+                                              depth: 0,
+                                              color: cardBackgroundColor
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: NeumorphicButton(
+                                            onPressed: () {
+                                              changeColor(Colors.white);
+                                            },
+                                            child: Center(
+                                                child: Text('Tommorow',
+                                                    style: GoogleFonts.roboto(
+                                                        color: cardBackgroundColor))),
+                                            style: NeumorphicStyle(
+                                              depth: 0,
+                                              color: cardBackgroundColor == Colors.white
+                                                  ? CustomColors.primaryBlue
+                                                  : Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: NeumorphicButton(
-                                onPressed: () {
-                                  changeColor(Colors.white);
-                                },
-                                child: Center(
-                                    child: Text('Tommorow',
-                                        style: GoogleFonts.roboto(
-                                            color: cardBackgroundColor))),
-                                style: NeumorphicStyle(
-                                  color: cardBackgroundColor == Colors.white
-                                      ? CustomColors.primaryBlue
-                                      : Colors.white,
-                                ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GraphSection(data: state.graphData,),
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                      GraphSection(data: state.graphData,),                      
-                      Container(
-                        child: Column(children: [                          
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                regularCard('images/vaccine.png',
-                                    'Search \n Vaccine by Pincode', () {
-                                  Get.to(HomePage());
-                                }),
-                              ]),
-                          SizedBox(height: 20),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                regularCard('images/map.png', 'Map', () {
-                                  Get.to(() => MapsPage());
-                                }),
-                                regularCard('images/stats.png', 'Statistics',
-                                    () {
-                                  Get.to(StatisticsPage());
-                                }),
-                              ]),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          PieChartSample1(
-                            value: [
-                              state.coronaData.recoveredPerOneMillion + 0.0,
-                              state.coronaData.deathsPerOneMillion + 0.0,
-                              state.coronaData.activePerOneMillion + 0.0,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('58%',style: TextStyle(color: Colors.pink,fontSize:20 ),),
+                                      Text('INFECTION RISK',style:TextStyle(color: Colors.grey,fontSize: 12))
+                                    ],
+                                  ),
+                                  SizedBox(width: 30,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text('24 June',),
+                                      Text('LIVE TRACKING',style:TextStyle(color: Colors.grey,fontSize: 12))
+                                    ],
+                                  )
+                                ],),
+                              Divider(thickness: 2,),
+                                Center(child: Text('State',style:TextStyle(color: CustomColors.primaryBlue,fontSize: 15,fontWeight: FontWeight.w700))),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 8),
-                            child: Card(
-                              elevation: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.all(30.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    CoronaColumn(
-                                      colors: Colors.green,
-                                      data:
-                                          f.format(state.coronaData.recovered),
-                                      string: "Recovered",
-                                    ),
-                                    CoronaColumn(
-                                      colors: Colors.blue,
-                                      data: f.format(state.coronaData.active),
-                                      string: "Active",
-                                    ),
-                                    CoronaColumn(
-                                      colors: Colors.red,
-                                      data: f.format(state.coronaData.deaths),
-                                      string: "Deaths",
-                                    ),
-                                  ],
-                                ),
-                              ),
+                        ),
+                        Container(
+                          color: CustomColors.secondryBlue,
+                          child: ClipPath(
+                            clipper: ClipPathClass2(context,MediaQuery.of(context).size.height-528),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height-518,
+                              color: CustomColors.primaryGrey,
                             ),
-                          )
-                        ]),
-                      )
-                    ],
-                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Align(alignment:Alignment.bottomCenter,child: bottomBar(context,animation)),
+
+                  ],
                 );
               }
               return CircularProgressIndicator();
             },
           ),
+          //bottomNavigationBar:
         ),
       );
     });
   }
-
-  // ignore: missing_return
   
 }
 SizedBox regularCard(String iconName, String cardLabel, Function onTap) {
@@ -219,5 +227,89 @@ SizedBox regularCard(String iconName, String cardLabel, Function onTap) {
           style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black))
     ]),
+  );
+}
+
+Widget bottomBar(context,Animation animation){
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      AnimatedBuilder(
+        animation: animation,
+        builder: (BuildContext context, Widget child) {
+         // print(animation.value);
+          return Padding(
+              padding: EdgeInsets.only(bottom:animation.value),
+              child: rotatedSquare()
+          );},
+      ),
+      ClipPath(
+        clipper:ClipPathClass(context),
+        child: Container(
+          color: CustomColors.primaryBlue,
+          height: 40,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children:[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.circle,color: Colors.white,size: 7,),
+                  SizedBox(width: 4,),
+                  Text('Live',style:GoogleFonts.roboto(color: Colors.white)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.circle,color: Colors.white,size: 7,),
+                  SizedBox(width: 4,),
+                  Text('Cases',style:GoogleFonts.roboto(color: Colors.white)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.circle,color: Colors.white,size: 7,),
+                  SizedBox(width: 4,),
+                  Text('Zones',style:GoogleFonts.roboto(color: Colors.white)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.circle,color: Colors.white,size: 7,),
+                  SizedBox(width: 4,),
+                  Text('Help',style:GoogleFonts.roboto(color: Colors.white)),
+                ],
+              ),
+
+            ]
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget rotatedSquare(){
+  return RotationTransition(
+    turns: new AlwaysStoppedAnimation(45 / 360),
+    child: Card(
+      shape:RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+      child: Container(
+        height: 35.0,
+        width: 35.0,
+          decoration: BoxDecoration(
+            gradient: new LinearGradient(colors:
+            [
+              CustomColors.primaryPink.withOpacity(0.7),
+              Colors.pinkAccent.withOpacity(0.8)
+            ],begin: Alignment.bottomLeft,
+                end:Alignment.bottomRight),
+              //color: CustomColors.primaryPink,
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+      ),
+    ),
   );
 }
