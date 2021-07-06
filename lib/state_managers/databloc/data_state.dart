@@ -12,7 +12,8 @@ class DataInitial extends DataState {}
 class CoronaDataLoaded extends DataState {
   final CoronaData coronaData;
   final List<TotalDataInternal> graphData;
-  CoronaDataLoaded(this.coronaData,this.graphData);
+  final List<StateCorona> stateCorona;
+  CoronaDataLoaded(this.coronaData,this.graphData,this.stateCorona);
 }
 
 class CoronaDataLoading extends DataState {}
