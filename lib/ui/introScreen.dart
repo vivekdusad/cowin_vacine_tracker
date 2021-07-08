@@ -22,32 +22,33 @@ class Intro extends StatefulWidget {
 }
 
 class _IntroState extends State<Intro> with TickerProviderStateMixin {
-  Animation<double>animation;
-  Tween<double> float=Tween(begin:0,end:3);
+  Animation<double> animation;
+  Tween<double> float = Tween(begin: 0, end: 3);
   AnimationController controller;
   @override
   void initState() {
     super.initState();
-    controller=AnimationController(vsync:this,duration:Duration(milliseconds: 1000));
-    animation=controller.drive(float);
+    controller = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1000));
+    animation = controller.drive(float);
     controller.addListener(() {
-      if(controller.value==1.0)
+      if (controller.value == 1.0)
         controller.reverse();
-      else if(controller.value==0.0)
-        controller.forward();
+      else if (controller.value == 0.0) controller.forward();
     });
     controller.forward();
-
   }
+
   Color cardBackgroundColor = Colors.white;
   void changeColor(Color changeToColor) {
     setState(() {
       cardBackgroundColor = changeToColor;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);    
+    SystemChrome.setEnabledSystemUIOverlays([]);
     //var f = NumberFormat.compact(locale: "en_US");
     return Consumer(builder: (context, watch, child) {
       DataBloc databloc = DataBloc(server: watch(serverprovider));
@@ -74,21 +75,20 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
                           color: Colors.white,
                           child: Column(
                             children: [
-
                               SizedBox(
                                 height: 15,
                               ),
                               HomeTopWidget(),
                               Padding(
-                                padding:EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 20),
                                 child: Card(
-                                  shape:RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(bottomLeft:
-                                    Radius.circular(10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(10),
                                         topLeft: Radius.circular(10),
-                                        bottomRight: Radius.circular(10)
-                                        ,topRight: Radius.circular(10)
-                                    ),
+                                        bottomRight: Radius.circular(10),
+                                        topRight: Radius.circular(10)),
                                   ),
                                   elevation: 10,
                                   color: Colors.white,
@@ -101,20 +101,22 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
                                           padding: const EdgeInsets.all(2.0),
                                           child: NeumorphicButton(
                                             onPressed: () {
-                                              changeColor(CustomColors.primaryBlue);
+                                              changeColor(
+                                                  CustomColors.primaryBlue);
                                             },
                                             child: Center(
                                                 child: Text('Today',
                                                     style: GoogleFonts.roboto(
-                                                      color: cardBackgroundColor ==
-                                                              Colors.white
-                                                          ? CustomColors.primaryBlue
-                                                          : Colors.white,
+                                                      color:
+                                                          cardBackgroundColor ==
+                                                                  Colors.white
+                                                              ? CustomColors
+                                                                  .primaryBlue
+                                                              : Colors.white,
                                                     ))),
                                             style: NeumorphicStyle(
-                                              depth: 0,
-                                              color: cardBackgroundColor
-                                            ),
+                                                depth: 0,
+                                                color: cardBackgroundColor),
                                           ),
                                         ),
                                       ),
@@ -131,10 +133,12 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
                                             child: Center(
                                                 child: Text('Tommorow',
                                                     style: GoogleFonts.roboto(
-                                                        color: cardBackgroundColor))),
+                                                        color:
+                                                            cardBackgroundColor))),
                                             style: NeumorphicStyle(
                                               depth: 0,
-                                              color: cardBackgroundColor == Colors.white
+                                              color: cardBackgroundColor ==
+                                                      Colors.white
                                                   ? CustomColors.primaryBlue
                                                   : Colors.white,
                                             ),
@@ -147,46 +151,88 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: GraphSection(data: state.graphData,),
+                                child: GraphSection(
+                                  data: state.graphData,
+                                ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text('58%',style: TextStyle(color: Colors.pink,fontSize:20 ),),
-                                      Text('INFECTION RISK',style:TextStyle(color: Colors.grey,fontSize: 12))
+                                      Text(
+                                        '58%',
+                                        style: TextStyle(
+                                            color: Colors.pink, fontSize: 20),
+                                      ),
+                                      Text('INFECTION RISK',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 12))
                                     ],
                                   ),
-                                  SizedBox(width: 30,),
+                                  SizedBox(
+                                    width: 30,
+                                  ),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text('24 June',),
-                                      Text('LIVE TRACKING',style:TextStyle(color: Colors.grey,fontSize: 12))
+                                      Text(
+                                        '24 June',
+                                      ),
+                                      Text('LIVE TRACKING',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 12))
                                     ],
                                   )
-                                ],),
-                              Divider(thickness: 2,),
-                                Center(child: Text('State',style:TextStyle(color: CustomColors.primaryBlue,fontSize: 15,fontWeight: FontWeight.w700))),
+                                ],
+                              ),
                             ],
                           ),
                         ),
                         Container(
                           color: CustomColors.secondryBlue,
                           child: ClipPath(
-                            clipper: ClipPathClass2(context,MediaQuery.of(context).size.height-528),
+                            clipper: ClipPathClass2(context,
+                                MediaQuery.of(context).size.height - 528),
                             child: Container(
-                              height: MediaQuery.of(context).size.height-518,
+                              height: MediaQuery.of(context).size.height - 518,
                               color: CustomColors.primaryGrey,
+                              child: SingleChildScrollView(
+
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    //dataRowColor: MaterialStateProperty<Color>,
+                                    rows: state.stateCorona
+                                          .map((e) => DataRow(cells: [
+                                                DataCell(Text(e.provinceState)),
+                                                DataCell(Text(e.active.toString(),)),
+                                                DataCell(Text(e.recovered.toString(),style:GoogleFonts.roboto(color: Colors.green))),
+                                                DataCell(Text(e.deaths.toString(),style: GoogleFonts.roboto(color: Colors.red),)),
+                                                DataCell(Text(e.confirmed.toString())),
+                                              ]))
+                                          .toList(),
+                                    columns: [
+                                      DataColumn(label: Text('State')),
+                                      DataColumn(label: Text('Active')),
+                                      DataColumn(label: Text('Recovered')),
+                                      DataColumn(label: Text('Deaths')),
+                                      DataColumn(label: Text('Confirmed')),
+
+                                    ],),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    Align(alignment:Alignment.bottomCenter,child: bottomBar(context,animation)),
-
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: bottomBar(context, animation)),
                   ],
                 );
               }
@@ -198,8 +244,8 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
       );
     });
   }
-  
 }
+
 SizedBox regularCard(String iconName, String cardLabel, Function onTap) {
   return SizedBox(
     child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -231,69 +277,90 @@ SizedBox regularCard(String iconName, String cardLabel, Function onTap) {
   );
 }
 
-Widget bottomBar(context,Animation animation){
+Widget bottomBar(context, Animation animation) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
       AnimatedBuilder(
         animation: animation,
         builder: (BuildContext context, Widget child) {
-         // print(animation.value);
+          // print(animation.value);
           return Padding(
-              padding: EdgeInsets.only(bottom:animation.value),
-              child: rotatedSquare()
-          );},
+              padding: EdgeInsets.only(bottom: animation.value),
+              child: rotatedSquare());
+        },
       ),
       ClipPath(
-        clipper:ClipPathClass(context),
+        clipper: ClipPathClass(context),
         child: Container(
           color: CustomColors.primaryBlue,
           height: 40,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children:[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.circle,color: Colors.white,size: 7,),
-                  SizedBox(width: 4,),
-                  Text('Live',style:GoogleFonts.roboto(color: Colors.white)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.circle,color: Colors.white,size: 7,),
-                  SizedBox(width: 4,),
-                  Text('Cases',style:GoogleFonts.roboto(color: Colors.white)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.circle,color: Colors.white,size: 7,),
-                  SizedBox(width: 4,),
-                  Text('Zones',style:GoogleFonts.roboto(color: Colors.white)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.circle,color: Colors.white,size: 7,),
-                  SizedBox(width: 4,),
-                  Text('Help',style:GoogleFonts.roboto(color: Colors.white)),
-                ],
-              ),
-
-            ]
-          ),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: Colors.white,
+                  size: 7,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Live', style: GoogleFonts.roboto(color: Colors.white)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: Colors.white,
+                  size: 7,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Cases', style: GoogleFonts.roboto(color: Colors.white)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: Colors.white,
+                  size: 7,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Zones', style: GoogleFonts.roboto(color: Colors.white)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: Colors.white,
+                  size: 7,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text('Help', style: GoogleFonts.roboto(color: Colors.white)),
+              ],
+            ),
+          ]),
         ),
       ),
     ],
   );
 }
 
-Widget rotatedSquare(){
+Widget rotatedSquare() {
   return RotationTransition(
     turns: new AlwaysStoppedAnimation(45 / 360),
     child: NeumorphicContainer(
@@ -303,15 +370,13 @@ Widget rotatedSquare(){
       child: Container(
         height: 35.0,
         width: 35.0,
-          decoration: BoxDecoration(
-            gradient: new LinearGradient(colors:
-            [
+        decoration: BoxDecoration(
+            gradient: new LinearGradient(colors: [
               CustomColors.primaryPink.withOpacity(0.7),
               Colors.pinkAccent.withOpacity(0.8)
-            ],begin: Alignment.bottomLeft,
-                end:Alignment.bottomRight),
-              //color: CustomColors.primaryPink,
-              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            ], begin: Alignment.bottomLeft, end: Alignment.bottomRight),
+            //color: CustomColors.primaryPink,
+            borderRadius: BorderRadius.all(Radius.circular(8.0))),
       ),
     ),
   );
