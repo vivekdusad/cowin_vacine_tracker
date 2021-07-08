@@ -14,6 +14,7 @@ import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:neumorphic_container/neumorphic_container.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -200,16 +201,28 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
                               height: MediaQuery.of(context).size.height - 518,
                               color: CustomColors.primaryGrey,
                               child: SingleChildScrollView(
-                                child: Table(
-                                  border: TableBorder.all(
-                                      color: Colors.black.withOpacity(0.6)),
-                                  children: state.stateCorona
-                                      .map((e) => TableRow(children: [
-                                            Text(e.provinceState),
-                                            Text(e.active.toString()),
-                                            Text(e.deaths.toString()),
-                                          ]))
-                                      .toList(),
+
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    //dataRowColor: MaterialStateProperty<Color>,
+                                    rows: state.stateCorona
+                                          .map((e) => DataRow(cells: [
+                                                DataCell(Text(e.provinceState)),
+                                                DataCell(Text(e.active.toString(),)),
+                                                DataCell(Text(e.recovered.toString(),style:GoogleFonts.roboto(color: Colors.green))),
+                                                DataCell(Text(e.deaths.toString(),style: GoogleFonts.roboto(color: Colors.red),)),
+                                                DataCell(Text(e.confirmed.toString())),
+                                              ]))
+                                          .toList(),
+                                    columns: [
+                                      DataColumn(label: Text('State')),
+                                      DataColumn(label: Text('Active')),
+                                      DataColumn(label: Text('Recovered')),
+                                      DataColumn(label: Text('Deaths')),
+                                      DataColumn(label: Text('Confirmed')),
+
+                                    ],),
                                 ),
                               ),
                             ),
@@ -350,9 +363,10 @@ Widget bottomBar(context, Animation animation) {
 Widget rotatedSquare() {
   return RotationTransition(
     turns: new AlwaysStoppedAnimation(45 / 360),
-    child: Card(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+    child: NeumorphicContainer(
+      borderRadius: 10,borderThickness: 3,spread: 3,
+      primaryColor: CustomColors.secondryBlue,
+      //shape:RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
       child: Container(
         height: 35.0,
         width: 35.0,
