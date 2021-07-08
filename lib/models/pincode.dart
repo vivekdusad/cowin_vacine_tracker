@@ -34,6 +34,8 @@ class Centers {
       name: json['name'],
       address: json['address'],
       stateName: json['state_name'],
+      lat: json['lat']is int?json['lat'].toDouble():json['lat'],
+      long: json['long']is int?json['long'].toDouble():json['long'],
       districtName: json['district_name'],
       blockName: json['block_name'],
       pincode: json['pincode'],

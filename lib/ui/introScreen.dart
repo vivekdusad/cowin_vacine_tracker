@@ -1,4 +1,5 @@
 import 'package:cowin_vaccine_tracker/constants/constants.dart';
+import 'package:cowin_vaccine_tracker/ui/maps.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/ClipPathClass.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/ClipPathClass2.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/home_top.dart';
@@ -13,6 +14,7 @@ import 'package:cowin_vaccine_tracker/main.dart';
 import 'package:cowin_vaccine_tracker/state_managers/databloc/data_bloc.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Intro extends StatefulWidget {
@@ -348,21 +350,26 @@ Widget bottomBar(context, Animation animation) {
 }
 
 Widget rotatedSquare() {
-  return RotationTransition(
-    turns: new AlwaysStoppedAnimation(45 / 360),
-    child: Card(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8.0))),
-      child: Container(
-        height: 35.0,
-        width: 35.0,
-        decoration: BoxDecoration(
-            gradient: new LinearGradient(colors: [
-              CustomColors.primaryPink.withOpacity(0.7),
-              Colors.pinkAccent.withOpacity(0.8)
-            ], begin: Alignment.bottomLeft, end: Alignment.bottomRight),
-            //color: CustomColors.primaryPink,
+  return InkWell(
+    onTap: () {
+      Get.to(() => MapsPage());
+    },
+    child: RotationTransition(
+      turns: new AlwaysStoppedAnimation(45 / 360),
+      child: Card(
+        shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8.0))),
+        child: Container(
+          height: 35.0,
+          width: 35.0,
+          decoration: BoxDecoration(
+              gradient: new LinearGradient(colors: [
+                CustomColors.primaryPink.withOpacity(0.7),
+                Colors.pinkAccent.withOpacity(0.8)
+              ], begin: Alignment.bottomLeft, end: Alignment.bottomRight),
+              //color: CustomColors.primaryPink,
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+        ),
       ),
     ),
   );
