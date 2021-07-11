@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cowin_vaccine_tracker/constants/constants.dart';
 import 'package:cowin_vaccine_tracker/models/CoronaCaseCountry.dart';
 import 'package:cowin_vaccine_tracker/models/data.dart';
+import 'package:cowin_vaccine_tracker/models/mohfw.dart';
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
 import 'package:cowin_vaccine_tracker/models/stateCorna.dart';
 import 'package:cowin_vaccine_tracker/models/stateDistrict.dart';
@@ -22,6 +23,7 @@ abstract class Server {
   Future<CoronaData> getCoronaData();
   Future<List<StateCorona>> getStateCorona();
   Future<List<TotalDataInternal>> fetchTotalData();
+  Future<List<Rows>> readMohew();
 }
 
 class ServerBase extends Server {
@@ -208,7 +210,34 @@ class ServerBase extends Server {
     List<TotalDataInternal> centers = list.map((e) {
       return TotalDataInternal.fromJson(e);
     }).toList();
-    return centers.where((element) => element.key[1] == "total_confirmed_cases").toList();
+    return centers
+        .where((element) => element.key[1] == "total_confirmed_cases")
+        .toList();
+  }
+
+  Future<List<Rows>> readMohew() async {
+    Response _response = await _getData(
+        url:
+            "https://raw.githubusercontent.com/datameet/covid19/master/data/mohfw.json");
+    try {
+      if (_response.statusCode == 500) {
+        throw SocketException("internet");
+      }
+    } on SocketException {
+      throw CustomException(); //"Internet error"
+    } on FormatException {
+      throw CustomException(); //"Try Again Later"
+    } on HttpException {
+      throw CustomException(); //"Server Error"
+    }
+    final _results = jsonDecode(_response.body);
+    var list = _results['rows'] as List;
+    List<Rows> centers = list.map((e) {
+      return Rows.fromJson(e);
+    }).toList();
+    final List<Rows> lis = centers.sublist(centers.length - 72);
+    print(lis[0].id);
+    return lis;
   }
 }
 

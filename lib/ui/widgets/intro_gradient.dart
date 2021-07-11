@@ -19,8 +19,7 @@ class GraphSection extends StatelessWidget {
     List<FlSpot> list = [];
     for (int i = 0; i < data.length - 1; i++) {
       var a = data[i].value;
-      var b = data[i + 1].value;
-      print("a: $a  " + " b: $b");
+      var b = data[i + 1].value;      
       list.add(FlSpot(i.toDouble(), (b - a) + 0.0));
     }
     List<FlSpot> reversedList = new List.from(list.reversed);
@@ -76,7 +75,6 @@ class GraphSection extends StatelessWidget {
       ),
       lineBarsData: [
         LineChartBarData(
-
           spots: giveList(),
           isCurved: true,
           colors: [CustomColors.primaryBlue],

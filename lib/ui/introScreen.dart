@@ -16,6 +16,7 @@ import 'package:cowin_vaccine_tracker/ui/widgets/errorWidget.dart';
 import 'package:cowin_vaccine_tracker/ui/widgets/loading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:neumorphic_container/neumorphic_container.dart';
 
 class Intro extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     //var f = NumberFormat.compact(locale: "en_US");
-    return Consumer(builder: (context, watch, child) {
+    return Consumer(builder: (context, watch, child) {      
       DataBloc databloc = DataBloc(server: watch(serverprovider));
       databloc.add(CoronaDataRequested());
       return BlocProvider(
@@ -202,16 +203,37 @@ class _IntroState extends State<Intro> with TickerProviderStateMixin {
                               height: MediaQuery.of(context).size.height - 518,
                               color: CustomColors.primaryGrey,
                               child: SingleChildScrollView(
-                                child: Table(
-                                  border: TableBorder.all(
-                                      color: Colors.black.withOpacity(0.6)),
-                                  children: state.stateCorona
-                                      .map((e) => TableRow(children: [
-                                            Text(e.provinceState),
-                                            Text(e.active.toString()),
-                                            Text(e.deaths.toString()),
-                                          ]))
-                                      .toList(),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    //dataRowColor: MaterialStateProperty<Color>,
+                                    rows: state.stateCorona
+                                        .map((e) => DataRow(cells: [
+                                              DataCell(Text(e.provinceState)),
+                                              DataCell(Text(
+                                                e.active.toString(),
+                                              )),
+                                              DataCell(Text(
+                                                  e.recovered.toString(),
+                                                  style: GoogleFonts.roboto(
+                                                      color: Colors.green))),
+                                              DataCell(Text(
+                                                e.deaths.toString(),
+                                                style: GoogleFonts.roboto(
+                                                    color: Colors.red),
+                                              )),
+                                              DataCell(
+                                                  Text(e.confirmed.toString())),
+                                            ]))
+                                        .toList(),
+                                    columns: [
+                                      DataColumn(label: Text('State')),
+                                      DataColumn(label: Text('Active')),
+                                      DataColumn(label: Text('Recovered')),
+                                      DataColumn(label: Text('Deaths')),
+                                      DataColumn(label: Text('Confirmed')),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -276,7 +298,11 @@ Widget bottomBar(context, Animation animation) {
           // print(animation.value);
           return Padding(
               padding: EdgeInsets.only(bottom: animation.value),
-              child: rotatedSquare());
+              child: InkWell(
+                  onTap: () {
+                    Get.to(() => MobileMapsPage());
+                  },
+                  child: rotatedSquare()));
         },
       ),
       ClipPath(
@@ -350,26 +376,21 @@ Widget bottomBar(context, Animation animation) {
 }
 
 Widget rotatedSquare() {
-  return InkWell(
-    onTap: () {
-      Get.to(() => MapsPage());
-    },
-    child: RotationTransition(
-      turns: new AlwaysStoppedAnimation(45 / 360),
-      child: Card(
-        shape: RoundedRectangleBorder(
+  return RotationTransition(
+    turns: new AlwaysStoppedAnimation(45 / 360),
+    child: Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+      child: Container(
+        height: 35.0,
+        width: 35.0,
+        decoration: BoxDecoration(
+            gradient: new LinearGradient(colors: [
+              CustomColors.primaryPink.withOpacity(0.7),
+              Colors.pinkAccent.withOpacity(0.8)
+            ], begin: Alignment.bottomLeft, end: Alignment.bottomRight),
+            //color: CustomColors.primaryPink,
             borderRadius: BorderRadius.all(Radius.circular(8.0))),
-        child: Container(
-          height: 35.0,
-          width: 35.0,
-          decoration: BoxDecoration(
-              gradient: new LinearGradient(colors: [
-                CustomColors.primaryPink.withOpacity(0.7),
-                Colors.pinkAccent.withOpacity(0.8)
-              ], begin: Alignment.bottomLeft, end: Alignment.bottomRight),
-              //color: CustomColors.primaryPink,
-              borderRadius: BorderRadius.all(Radius.circular(8.0))),
-        ),
       ),
     ),
   );
