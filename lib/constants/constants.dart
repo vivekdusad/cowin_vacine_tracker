@@ -5,6 +5,7 @@ String sessionsbaseUrl =
 String locationbaseUrl = "https://cdn-api.co-vin.in/api/v2/admin/location/";
 String dataUrl = "https://disease.sh/v3/covid-19/countries/india";
 String coronaDataURl = "https://covid19.mathdro.id/api/countries/in/confirmed";
+String latlongURL="https://cdn-api.co-vin.in/api/v2/appointment/centers/public/";
 
 List<String> states = [
   "Andhra Pradesh",

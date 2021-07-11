@@ -34,16 +34,16 @@ class Centers {
       name: json['name'],
       address: json['address'],
       stateName: json['state_name'],
-      lat: json['lat']is int?json['lat'].toDouble():json['lat'],
-      long: json['long']is int?json['long'].toDouble():json['long'],
+      lat: double.parse(json['lat']),
+      long: double.parse(json['long']),
       districtName: json['district_name'],
       blockName: json['block_name'],
-      pincode: json['pincode'],
+      pincode: int.parse(json['pincode']),
       from: json['from'],
       to: json['to'],
       feeType: json['fee_type'],
-      sessions: List<Sessions>.from(
-          json['sessions'].map((e) => Sessions.fromJson(e)).toList()),
+      // sessions: List<Sessions>.from(
+      //     json['sessions'].map((e) => Sessions.fromJson(e)).toList()),
     );
   }
 

@@ -19,6 +19,7 @@ abstract class Server {
   Future<List<Centers>> getSessionByDistrict(String distId, DateTime date);
   Future<List<Centers>> getSessionByPincode(String pincode, DateTime date);
   Future<List<States>> getStates();
+  Future<List<Centers>> getbylatlong(double lat, double long);
   Future<List<Districts>> getDistrict(int stateId);
   Future<CoronaData> getCoronaData();
   Future<List<StateCorona>> getStateCorona();
@@ -86,6 +87,8 @@ class ServerBase extends Server {
     Response _response = await _getData(
         url:
             sessionsbaseUrl + "calendarByPin?pincode=$pincode&date=$formatted");
+
+
     try {
       if (_response.statusCode == 500) {
         throw SocketException("internet");
@@ -108,6 +111,33 @@ class ServerBase extends Server {
     return centers;
   }
 
+  Future<List<Centers>> getbylatlong(double lat, double long) async {
+    Response _response = await _getData(
+        url:
+        latlongURL + "findByLatLong?lat=$lat&long=$long");
+
+
+    try {
+      if (_response.statusCode == 500) {
+        throw SocketException("internet");
+      }
+    } on SocketException {
+      throw CustomException(); //"Internet error"
+    } on FormatException {
+      throw CustomException(); //"Try Again Later"
+    } on HttpException {
+      throw CustomException(); //"Server Error"
+    }
+    final _results = jsonDecode(_response.body);
+    var list = _results['centers'] as List;
+    if (list == null) {
+      throw SocketException("Wrong lat long");
+    }
+    List<Centers> centers = list.map((e) {
+      return Centers.fromJson(e);
+    }).toList();
+    return centers;
+  }
   Future<List<Centers>> getSessionByDistrict(
       String distId, DateTime date) async {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');

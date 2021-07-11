@@ -1,7 +1,10 @@
 import 'package:cowin_vaccine_tracker/models/pincode.dart';
+import 'package:cowin_vaccine_tracker/ui/widgets/CustomModalSheet.dart';
 
 import 'package:cowin_vaccine_tracker/web/server.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -29,9 +32,8 @@ class _MapsPage extends State<MobileMapsPage>
   @override
   bool get wantKeepAlive => true;
 
-  Future<List<Centers>> _allCasesFuture;
   List<Centers> cases;
-  final Map<String, Marker> _markers = {};
+  Set<Marker>_markers= {};
 
   GoogleMapController mapController;
 
@@ -42,43 +44,55 @@ class _MapsPage extends State<MobileMapsPage>
     }
 
     setState(() {
-      _markers.clear();
       cases.forEach((element) {
-        
-        final district = element.districtName;
+        //final district = element.districtName;
+        print(element.lat);
+        print(element.long);
         final title = '${element.centerId}';
         final marker = Marker(
           markerId: MarkerId(title),
           position: LatLng(element.lat, element.long),
-          infoWindow: InfoWindow(
-            title:
-                "${element.stateName != null ? element.stateName : 'N/A'}-${element.pincode}",
-            snippet: "C: $district",
-          ),
+          onTap: (){
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text("${element.stateName != null ? element.stateName : 'N/A'}-${element.pincode}",
+                        style:GoogleFonts.roboto())
+                    ],
+                  );
+                });
+          }
+          // infoWindow: InfoWindow(
+          //   title:
+          //       "${element.stateName != null ? element.stateName : 'N/A'}-${element.pincode}",
+            // snippet: "C: $district",
+          // ),
         );
-        _markers[title] = marker;
+        _markers.add(marker);
       });
     });
   }
-
+  Position position;
   @override
-  void initState() {
-    _fetchData();
+  void initState(){
+    //_fetchData();
     super.initState();
   }
 
-  _fetchData() {
-    _allCasesFuture =
-        ServerBase().getSessionByDistrict("512", DateTime.now());
+  Future<List<Centers>> _fetchData() {
+    return ServerBase().getbylatlong(position.latitude, position.longitude);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-        future: _allCasesFuture,
+        future: getLocation(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
             return Padding(
               padding: EdgeInsets.only(top: 16, bottom: 16),
               child: Center(child: CircularProgressIndicator()),
@@ -88,17 +102,42 @@ class _MapsPage extends State<MobileMapsPage>
               child: Text('An error has occured'),
             );
           } else {
-            this.cases = snapshot.data;
+            // Position position = Geolocator
+            //     .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+            position=snapshot.data;
+            return FutureBuilder(
+              future: _fetchData(),
+              builder:(context,snapshot)
+              {
+                if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (snapshot.error != null) {
+                  return Center(
+                    child: Text('An error has occured'),
+                  );
+                }
+                else{
+                  this.cases=snapshot.data;
 
-            return GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: const LatLng(30.5833, 114.26667),
-                zoom: 5,
-              ),
-              markers: _markers.values.toSet(),
+                return GoogleMap(
+                  myLocationEnabled: true,
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(position.latitude,position.longitude),
+                  zoom: 15,
+                ),
+                markers: _markers,
+              );
+              }
+              }
             );
           }
         });
   }
 }
+Future<Position> getLocation() async { Position position = await Geolocator .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+print(position);
+return position; }

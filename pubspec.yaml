@@ -48,6 +48,8 @@ dependencies:
   neumorphic_container: ^0.0.1+2
   google_maps_flutter: ^2.0.1
   google_maps:
+  geolocator:
+  geocoding:
   intl:
   fl_chart: ^0.36.2
 

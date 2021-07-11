@@ -21,7 +21,7 @@ class CoronaData {
   int oneTestPerPeople;
   int undefined;
   double activePerOneMillion;
-  double recoveredPerOneMillion;
+  int recoveredPerOneMillion;
   double criticalPerOneMillion;
 
   CoronaData(
